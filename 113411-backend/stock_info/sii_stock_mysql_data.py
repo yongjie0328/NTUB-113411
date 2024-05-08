@@ -2,7 +2,7 @@ import pandas as pd
 import mysql.connector
 
 # 讀取 CSV 檔案到 DataFrame
-df = pd.read_csv(r"C:\Users\yingh\Desktop\python爬蟲\stock_info\otc_stock_info_select.csv")
+df = pd.read_csv(r"C:\Users\yingh\Desktop\python爬蟲\stock_info\sii_stock_info_select.csv")
 
 # 在讀取 CSV 檔案時，將 "-" 替換為 None
 df.replace("-", None, inplace=True)
@@ -31,7 +31,7 @@ column_mapping = {
     "住址": "address",
     "董事長": "chairman",
     "成立日期": "establishment_date",
-    "上櫃日期": "otc_date",
+    "上市日期": "sii_date",
     "普通股每股面額": "common_stock_par_value",
     "實收資本額(元)": "total_capital",
     "已發行普通股數或TDR原發行股數": "issued_common_stock",
@@ -51,7 +51,7 @@ for index, row in df.iterrows():
     mapped_row = {column_mapping[key]: value for key, value in row.items()}
 
     # 建構寫入資料的SQL語句
-    sql = "INSERT INTO otc_stock_info ({}) VALUES ({})".format(
+    sql = "INSERT INTO sii_stock_info ({}) VALUES ({})".format(
         ", ".join(mapped_row.keys()), ", ".join(["%s"] * len(mapped_row))
     )
     
