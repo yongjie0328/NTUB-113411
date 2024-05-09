@@ -1,66 +1,61 @@
 <template>
-    <div class="chart-container">
-      <canvas ref="myChart"></canvas>
-    </div>
-  </template>
-  
-  <script>
+  <div>
+    <canvas v-if="isCanvasVisible" ref="myChart"></canvas>
+    <!-- 其他 UI 內容 -->
+  </div>
+</template>
+
+<script>
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
 export default {
+  name: 'DiscussionBoard',
   data() {
     return {
-      chart: null,
+      isCanvasVisible: true,
     };
   },
   mounted() {
-    this.createChart();
+    this.initChart();
   },
   methods: {
-    createChart() {
-      const ctx = this.$refs.myChart.getContext('2d'); // 使用 ref 引用
-      this.chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-          datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-            
+    initChart() {
+      // 確保 `<canvas>` 已經渲染到 DOM 中
+      const canvas = this.$refs.myChart;
+
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+
+        // 初始化 Chart.js 圖表
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['January', 'February', 'March'],
+            datasets: [
+              {
+                label: 'Sample Data',
+                data: [10, 20, 30],
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+              },
             ],
-            borderColor: [
-              'rgba(255, 99, 132, 1)',
-              
-            ],
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          }
-        }
-      });
-    }
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+          },
+        });
+      } else {
+        console.error('Canvas element is not available');
+      }
+    },
   },
-  beforeUnmount() {
-    if (this.chart) {
-      this.chart.destroy();
-    }
-  }
-}
+};
 </script>
 
-  
-  <style scoped>
-  .chart-container {
-    width: 100%;
-    height: 500px; /* 或根据需要调整高度 */
-  }
-  </style>
-  
+<style scoped>
+canvas {
+  width: 100%;
+  height: 400px;
+}
+</style>

@@ -1,8 +1,5 @@
 <template>
     <div class="container">
-      <!-- 導航列 -->
-      
-  
       <!-- 頁尾 -->
       <footer class="footer">
         <a href="https://mops.twse.com.tw/mops/web/index" target="_blank" rel="noopener noreferrer"   class="footer-link">公開資訊觀測站</a>
@@ -35,7 +32,7 @@
   bottom: 0;                      /* 底部对齐到视口 */
   width: 100%;                    /* 宽度占满整个视口宽度 */
   padding: 8px 0;                 /* 垂直内边距 */
-  background-color: #99c2ec;      /* 背景色 */
+  background-color: #95c3e2;      /* 背景色 */
   color: white;                   /* 文本颜色 */
   text-align: center;             /* 文本居中 */
   box-sizing: border-box;         /* 边框和内边距不增加宽度 */
