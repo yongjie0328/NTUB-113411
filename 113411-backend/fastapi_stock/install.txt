@@ -1,0 +1,13 @@
+1. 新增環境
+conda create -n fastapi_stock
+2. 進入環境
+conda activate fastapi_stock
+
+conda install python
+
+3. 安裝fastapi相關套件
+pip install fastapi uvicorn
+# insatall
+pip install pandas mysql-connector-python
+4 建立後端啟動的程序(main.py, backend_server.py)
+5.在service資料夾寫底層的功能; 在route資料夾下寫API給前端獲取

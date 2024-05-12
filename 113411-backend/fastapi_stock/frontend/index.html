@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Frontend</title>
+</head>
+<body>
+    <h1>Simple Frontend</h1>
+    <p>This is a simple frontend page.</p>
+    <button id="fetchButton">Fetch Data</button>
+    <div id="dataContainer"></div>
+    <script>
+        document.getElementById("fetchButton").addEventListener("click", function() {
+            fetch("http://192.168.120.30:1234/OTC/alldata")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    var dataContainer = document.getElementById("dataContainer");
+                    dataContainer.textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    console.error("Fetch error:", error);
+                });
+        });
+    </script>
+</body>
+</html>
