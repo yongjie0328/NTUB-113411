@@ -14,6 +14,20 @@
         <label for="password">密碼</label>
         <input type="password" id="password" v-model="password" required>
       </div>
+      <div class="form-group">
+        <label>性別</label>
+        <div class="gender-options">
+          <label>
+            <input type="radio" value="male" v-model="gender" required> 男
+          </label>
+          <label>
+            <input type="radio" value="female" v-model="gender" required> 女
+          </label>
+          <label>
+            <input type="radio" value="other" v-model="gender" required> 其他
+          </label>
+        </div>
+      </div>
       <button type="submit">註冊</button>
     </form>
   </div>
@@ -25,14 +39,17 @@ export default {
   data() {
     return {
       username: '',
-      password: ''
+      email: '',
+      password: '',
+      gender: '' // 新增的性別欄位
     };
   },
   methods: {
     register() {
       console.log('Username:', this.username);
+      console.log('Email:', this.email);
       console.log('Password:', this.password);
-      console.log('email:', this.email);
+      console.log('Gender:', this.gender);
       // 此處可以添加註冊相關的邏輯
     }
   }
@@ -61,9 +78,15 @@ label {
   margin-bottom: 5px;
 }
 
+.gender-options {
+  justify-content: center;
+  display: flex; /* 使用flex排列 */
+  gap: 20px; /* 增加每個選項之間的距離 */
+}
+
 input[type="text"],
 input[type="password"],
-input[type="email"]{
+input[type="email"] {
   width: 60%;
   padding: 10px;
   font-size: 16px;

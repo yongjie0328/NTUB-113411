@@ -1,28 +1,36 @@
 <template>
-    <div class="container">
-      <!-- 導航列 -->
-      <nav class="navbar">
-        <div class="nav-left">
-          <router-link to="/risk" class="nav-link">風險評估</router-link>
-          <router-link to="/stock" class="nav-link">個股資訊</router-link>
-          <router-link to="/news" class="nav-link">新聞</router-link>
-          <router-link to="/discussion" class="nav-link">討論區</router-link>
-        </div>
-        <div class="nav-right">
-          <input type="text" placeholder="搜尋..." class="search-input">
-          <router-link to="/profile" class="nav-link">個人資訊</router-link>
-          <router-link to="/logout" class="nav-link">登出</router-link>
-        </div>
-      </nav>
+  <div class="container">
+    <!-- 導航列 -->
+    <nav class="navbar">
+      <div class="nav-left">
+        <router-link to="/Home" class="nav-link" :class="{ 'active-link': isActive('/Home') }">首頁</router-link>
+        <router-link to="/stock" class="nav-link" :class="{ 'active-link': isActive('/stock') }">個股資訊</router-link>
+        <router-link to="/teaching" class="nav-link" :class="{ 'active-link': isActive('/teaching') }">教學小學堂</router-link>
+        <router-link to="/risk" class="nav-link" :class="{ 'active-link': isActive('/risk') }">投資評估</router-link>
+        <router-link to="/news" class="nav-link" :class="{ 'active-link': isActive('/news') }">新聞</router-link>
+        <router-link to="/discussion" class="nav-link" :class="{ 'active-link': isActive('/discussion') }">討論區</router-link>
+      </div>
+      <div class="nav-right">
+        <input type="text" placeholder="搜尋..." class="search-input">
+        <router-link to="/profile" class="nav-link" :class="{ 'active-link': isActive('/profile') }">個人資訊</router-link>
+        <router-link to="/logout" class="nav-link" :class="{ 'active-link': isActive('/logout') }">登出</router-link>
+      </div>
+    </nav>
+  </div>
+</template>
 
-    </div>
-  </template>
   
-  <script>
-  export default {
-    name: 'NavbarForm'
+<script>
+export default {
+  name: 'NavbarForm',
+  methods: {
+    isActive(path) {
+      // 这里使用了简单的路径开始匹配，根据项目实际需要调整
+      return this.$route.path.startsWith(path);
+    }
   }
-  </script>
+}
+</script>
   
   <style>
   .container {
@@ -74,6 +82,10 @@
   border-radius: 5px;
   transition: background-color 0.3s;
 }
+.active-link {
+  background-color: #e0e0e0; /* 淡灰色背景 */
+  color: #1a73e8; /* 蓝色文字 */
+}
 
   .nav-link:hover {
   background-color: #e0e0e0; /* Light gray background on hover */
@@ -100,6 +112,8 @@
     padding: 5px 8px;
   }
 }
+
+
 
  
   </style>
