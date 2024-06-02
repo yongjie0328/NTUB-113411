@@ -1,0 +1,317 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    font-weight: bold; /* 設置全局文字為粗體 */
+}
+
+header {
+    background-color: #013b0b;
+    color: #fff;
+    padding: 1em 0;
+}
+
+h1 {
+    margin: 0;
+}
+
+main {
+    padding: 0; /* 移除main元素的內邊距 */
+}
+
+.gray-section {
+    background-color: #e0e0e0;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.beige-section {
+    background-color: #f5f5dc;
+    padding: 2em;
+    margin: 0; /* 移除外邊距 */
+}
+
+section {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+section.slide-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+h2 {
+    padding: 1em;
+    margin: 0; /* 移除外邊距 */
+}
+
+h3 {
+    font-size: 1.5em;
+    margin: 1em 0;
+}
+
+.card-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto; /* 移除上下外邊距 */
+    padding: 0; /* 確保沒有內邊距 */
+    width: 70%; /* 設置卡片寬度為30% */
+}
+
+.card {
+    background-color: #333; /* 深灰色背景 */
+    color: #fff; /* 白色文字 */
+    padding: 1em; /* 減少內邊距 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+    border: 2px solid #fff; /* 框線 */
+    width: 30%; /* 設置卡片寬度為30% */
+    margin: 0 0.5em; /* 左右外邊距確保卡片之間的間隔 */
+}
+
+.card-content {
+    margin-top: 1em;
+    text-align: left;
+    border-top: 1px solid #fff; /* 框線 */
+    padding-top: 1em;
+}
+.text-block1 {
+    margin: 1em 0;
+    padding: 1em;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.text-block {
+    margin: 1em 0;
+    padding: 1em;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.text-block:hover {
+    transform: scale(1.05);
+    background-color: #f0e68c; /* 懸停時的背景色 */
+}
+
+.text-block.left {
+    text-align: left;
+}
+
+.text-block.right {
+    text-align: right;
+}
+
+.half {
+    width: 45%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.table {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.cell {
+    flex: 1 0 30%;
+    margin: 1em;
+    padding: 1em;
+    transition: opacity 1s;
+}
+
+.cell.black {
+    background-color: #333;
+    color: #fff;
+}
+
+.cell.beige {
+    background-color: #f5f5dc;
+    color: #333;
+}
+
+hr {
+    margin: 2em 0;
+}
+
+.collapsible {
+    cursor: pointer;
+    background-color: #ccc;
+    transition: height 0.3s, padding 0.3s;
+}
+
+.collapsible.active {
+    height: auto;
+    padding: 2em;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Hidden content for collapsible */
+.content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    padding: 0 18px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(3, auto);
+    gap: 2em;
+    justify-items: start;
+    align-items: start;
+    padding: 2em;
+}
+
+.grid-item {
+    background-color: #f5f5dc; /* 杏色背景 */
+    padding: 1em;
+    border: 1px solid #333; /* 深灰色邊框 */
+    text-align: left;
+}
+
+.grid-item#item1 {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+}
+
+.grid-item#item2 {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+}
+
+.grid-item#item3 {
+    grid-column: 1 / 2;
+    grid-row: 3 / 4;
+}
+
+.profit-types, .cost-types {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.profit-type, .cost-type {
+    background-color: #666;
+    color: #fff;
+    margin: 0 10px;
+    padding: 20px;
+    border-radius: 8px;
+    width: 200px;
+}
+
+.profit-type:hover, .cost-type:hover {
+    transform: scale(1.05);
+    background-color: #444;
+}
+
+.profit-container {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.trends-table {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+.trends-table td {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+
+.trend-item {
+    position: relative;
+    padding: 20px;
+}
+
+.more-text {
+    display: none;
+    text-align: left;
+    margin-top: 10px;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.strategies-section {
+    padding: 20px;
+    background-color: #333;
+    color: #fff;
+}
+
+.strategy {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #444;
+    border-radius: 8px;
+    transition: transform 0.3s;
+}
+
+.strategy:hover {
+    transform: scale(1.05);
+}
+
+.strategy-header {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.strategy-content {
+    font-size: 1em;
+    text-align: left;
+}
+
+/* Styles for the tabs */
+.tab {
+    overflow: hidden;
+    border-bottom: 1px solid #ccc;
+    background-color: #f1f1f1;
+    display: flex;
+    justify-content: space-between;
+}
+
+.tab button {
+    background-color: inherit;
+    flex: 1; /* Flex property to make buttons take equal space */
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+.tab button:hover {
+    background-color: #ddd;
+}
+
+.tab button.active {
+    background-color: #ccc;
+}
+
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border-top: none;
+    text-align: left;
+}
