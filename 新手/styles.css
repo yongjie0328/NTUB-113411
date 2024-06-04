@@ -1,0 +1,379 @@
+header {
+    display: flex;
+    align-items: center;
+    justify-content: center;  /* 水平方向居中 */
+    text-align: center; /* 文字居中 */
+}
+
+header img {
+    margin-right: 3px; /* 調整間距 */
+}
+
+.header-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.separator {
+    width: 3px;
+    height: 75px; /* 調整高度 */
+    background-color: #f8f9fa; /* 調整顏色 */
+    margin-left: 10px; /* 調整間距 */
+    margin-right: 10px; /* 調整間距 */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    font-weight: bold; /* 設置全局文字為粗體 */
+}
+
+header {
+    background-color: #57614E;
+    color: #fff;
+    padding: 1em 0;
+}
+
+h1 {
+    margin: 0;
+}
+
+main {
+    padding: 0; /* 移除main元素的內邊距 */
+}
+
+.gray-section {
+    background-color: #bdbdbd;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.beige-section {
+    background-color: #E9E9E9;
+    padding: 2em;
+    margin: 0; /* 移除外邊距 */
+}
+
+section {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+section.slide-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+h2 {
+    padding: 1em;
+    margin: 0; /* 移除外邊距 */
+    font-size: 50px
+}
+
+h3 {
+    font-size: 32px;
+    margin: 1em 0;
+}
+
+p{
+    font-size: 24px;
+}
+
+li {
+    font-size: 20px; /* 設定字體大小為 20 像素 */
+}
+p4{
+    display: flex;
+    align-items: center; /* 垂直置中 */
+    text-align: left; /* 左對齊 */
+    font-size: 24px;
+}
+
+.text-block {
+    margin: 1em 0;
+    padding: 1em;
+    text-align: left; /* 文字靠左對齊 */
+    display: flex; /* 使用 flex 排版 */
+    flex-direction: column; /* 垂直排列 */
+    justify-content: center; /* 垂直置中 */
+    align-items: center; /* 水平置中 */
+    height: 200px; /* 根據需要調整 */
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.card-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto; /* 移除上下外邊距 */
+    padding: 0; /* 確保沒有內邊距 */
+    width: 70%; /* 設置卡片寬度為30% */
+}
+
+.card {
+    background-color: #fff; /* 白色背景 */
+    color: #333; /* 深灰色文字 */
+    padding: 1em; /* 減少內邊距 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+    border: 2px solid #333; /* 框線 */
+    width: 30%; /* 設置卡片寬度為30% */
+    margin: 0 0.5em; /* 左右外邊距確保卡片之間的間隔 */
+}
+
+.card-content {
+    margin-top: 1em;
+    text-align: left;
+    border-top: 1px solid #333; /* 框線 */
+    padding-top: 1em;
+}
+.text-block1 {
+    margin: 1em 0;
+    padding: 1em;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.text-block {
+    margin: 1em 0;
+    padding: 1em;
+    text-align: left;
+    align-items: center; /* 垂直置中 */
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.text-block h4 {
+    margin: 0;
+    width: 80%; /* 調整寬度，使其不會撐滿整個容器 */
+    text-align: left; /* 確保文字靠左對齊 */
+}
+
+.text-block:hover {
+    transform: scale(1.05);
+    background-color: #6d6d6a; /* 懸停時的背景色 */
+}
+
+.text-block.left {
+    text-align: left;
+}
+
+.text-block.right {
+    text-align: right;
+}
+
+.half {
+    width: 45%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.table {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.cell {
+    flex: 1 0 30%;
+    margin: 1em;
+    padding: 1em;
+    transition: opacity 1s;
+}
+
+.cell.black {
+    background-color: #333;
+    color: #fff;
+}
+
+.cell.beige {
+    background-color: #6d6d6a;
+    color: #333;
+}
+
+hr {
+    margin: 2em 0;
+}
+
+.collapsible {
+    cursor: pointer;
+    background-color: #ccc;
+    transition: height 0.3s, padding 0.3s;
+}
+
+.collapsible.active {
+    height: auto;
+    padding: 2em;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Hidden content for collapsible */
+.content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    padding: 0 18px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(3, auto);
+    gap: 2em;
+    justify-items: start;
+    align-items: start;
+    padding: 2em;
+}
+
+.grid-item {
+    background-color: #E9E9E9; /* 杏色背景 */
+    padding: 1em;
+    text-align: left;
+}
+
+.grid-item#item1 {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+}
+
+.grid-item#item2 {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+}
+
+.grid-item#item3 {
+    grid-column: 1 / 2;
+    grid-row: 3 / 4;
+}
+
+.profit-types, .cost-types {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.profit-type, .cost-type {
+    background-color: #666;
+    color: #fff;
+    margin: 0 10px;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+}
+
+.profit-type:hover, .cost-type:hover {
+    transform: scale(1.05);
+    background-color: #444;
+}
+
+.profit-container {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.trends-table {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+.trends-table td {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+
+.trend-item {
+    position: relative;
+    padding: 20px;
+}
+
+.more-text {
+    display: none;
+    text-align: left;
+    margin-top: 10px;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.strategies-section {
+    padding: 20px;
+    background-color: #333;
+    color: #fff;
+}
+
+.strategy {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #444;
+    border-radius: 8px;
+    transition: transform 0.3s;
+}
+
+.strategy:hover {
+    transform: scale(1.05);
+}
+
+.strategy-header {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.strategy-content {
+    font-size: 24px;
+    text-align: left;
+}
+
+/* Styles for the tabs */
+.tab {
+    overflow: hidden;
+    border-bottom: 1px solid #ccc;
+    background-color: #f1f1f1;
+    display: flex;
+    justify-content: space-between;
+    font-size: 24px; /* 字體大小 */
+    font-family: Arial, sans-serif; /* 字體字形 */
+    margin: 5px 0;
+}
+
+.tab button {
+    background-color: inherit;
+    flex: 1; /* Flex property to make buttons take equal space */
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 20px;
+}
+
+.tab button:hover {
+    background-color: #ddd;
+}
+
+.tab button.active {
+    background-color: #ccc;
+}
+
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border-top: none;
+    text-align: left;
+}
