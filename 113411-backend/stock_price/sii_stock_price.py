@@ -4,7 +4,7 @@ import pandas as pd
 import random
 import time
 
-#證交所個股日成交資訊
+# 證交所個股日成交資訊
 def get_tw_stock_data(start_year, start_month, end_year, end_month, stock_code):
     start_date = str(datetime(start_year, start_month, 1).strftime('%Y-%m-%d'))
     end_date = str(datetime(end_year, end_month, 1).strftime('%Y-%m-%d'))
@@ -30,16 +30,17 @@ def get_tw_stock_data(start_year, start_month, end_year, end_month, stock_code):
     return df
 
 # 讀取 sii_stock_info_select.csv 檔案並提取上市股票代碼
-df = pd.read_csv(r"C:\Users\yingh\Desktop\python爬蟲\stock_info\sii_stock_info_select.csv", usecols=['公司代號'])
-df.to_csv('sii_stock_id.csv', index=False, encoding='utf-8-sig')
-print("股票代碼已儲存到 sii_stock_id.csv 檔案中。")
+df = pd.read_csv(r"C:\Users\yingh\Desktop\python爬蟲\stock_info\sii_stock_info_select.csv", usecols=['股票代碼'])
+df.to_csv('./stock_price/sii_stock_id.csv', index=False, encoding='utf-8-sig')
+print("股票代碼已儲存到 './stock_price/sii_stock_id.csv' 檔案中。")
 
-# 股票代碼欄位名稱為'公司代號'
-stock_code_list = df['公司代號'].tolist()
+# 股票代碼欄位名稱為'股票代碼'
+stock_code_list = df['股票代碼'].tolist()
 
-#前30日個股歷史價格
+# 前30日個股歷史價格
 def get_multi_tw_stock_data(stock_code_list):
     df = pd.DataFrame()
+    no_data_list = []  # 存放沒有資料的股票代碼清單
     for stock_code in stock_code_list:
         try:
             current_time = datetime.now()
@@ -54,17 +55,62 @@ def get_multi_tw_stock_data(stock_code_list):
             stock_df.insert(0, '股票代碼', stock_code)
             df = pd.concat([df, stock_df], ignore_index=True)
         except Exception as e:
-            print(f"找不到股票代碼 {stock_code} 的數據：{e}")
+            print(f"找不到股票代碼 {stock_code} 的資料：{e}")
+            no_data_list.append(stock_code)
             continue
         time.sleep(random.uniform(2, 5))
-    return df
+    print("沒有資料的股票代碼清單：", no_data_list)
+    return df , no_data_list 
 
-df = get_multi_tw_stock_data(stock_code_list)
-df.to_csv('sii_stock_price.csv', index=False, encoding='utf-8-sig')
-print("股票代碼已儲存到 sii_stock_price.csv 檔案中。")
+# 獲取單日的股票資料
+def get_tw_stock_data_day(stock_code, day):
+    url = f"https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=json&date={day}&stockNo={stock_code}"
+    res = r.get(url)
+    if res.status_code == 200:
+        stock_json = res.json()
+        if 'data' in stock_json:
+            stock_df = pd.DataFrame.from_dict(stock_json['data'])
+            stock_df.columns = ['日期', '成交股數', '成交金額', '開盤價', '最高價', '最低價', '收盤價', '漲跌價差', '成交筆數']
+            stock_df['日期'] = stock_df['日期'].apply(lambda x: datetime.strptime(f"{int(x.split('/')[0])+1911}/{x.split('/')[1]}/{x.split('/')[2]}", '%Y/%m/%d').strftime('%Y-%m-%d'))
+            return stock_df
+    return None
+
+# 前30日個股歷史價格
+def get_multi_tw_stock_data_day(no_data_list):
+    df2 = pd.DataFrame()
+
+    # 針對 no_data_list 裡面的股票代碼，逐天爬取價格資料
+    for stock_code in no_data_list:
+        try:
+            current_time = datetime.now()
+            for i in range(30):
+                day = (current_time - timedelta(days=i)).strftime('%Y%m%d')
+                stock_df = get_tw_stock_data_day(stock_code, day)
+                if stock_df is not None:
+                    stock_df.insert(0, '股票代碼', stock_code)
+                    df2 = pd.concat([df, stock_df], ignore_index=True)
+                    print(f"獲取到股票代碼 {stock_code} 在 {day} 的資料。")
+                else:
+                    print(f"找不到股票代碼 {stock_code} 在 {day} 的資料。")
+                time.sleep(random.uniform(2, 5))
+        except Exception as e:
+            print(f"針對股票代碼 {stock_code} 的逐天資料爬取失敗：{e}")
+            continue
+
+    return df2
+
+# 執行多股股票資料獲取
+df, no_data_list = get_multi_tw_stock_data(stock_code_list)
+df2 = get_multi_tw_stock_data_day(no_data_list)
+
+# 合併資料框
+combined_df = pd.concat([df, df2], ignore_index=True)
+
+combined_df.to_csv('./stock_price/sii_stock_price.csv', index=False, encoding='utf-8-sig')
+print("股票歷史價格資料已儲存到 './stock_price/sii_stock_price.csv' 檔案中。")
 
 # 讀取 sii_stock_price.csv 檔案
-df = pd.read_csv('sii_stock_price.csv')
+df = pd.read_csv('./stock_price/sii_stock_price.csv')
 
 # 獲取今天日期
 end_date = datetime.now().strftime('%Y-%m-%d')
@@ -79,5 +125,5 @@ selected_data = df[(df['日期'] >= start_date) & (df['日期'] <= end_date)]
 print(selected_data)
 
 # 將所選日期範圍的資料儲存到另一個 CSV 檔案中
-selected_data.to_csv('sii_stock_price_select.csv', index=False, encoding='utf-8-sig')
-print("所選日期範圍的資料已儲存到 sii_stock_price_select.csv 檔案中。")
+selected_data.to_csv('./stock_price/sii_stock_price_select.csv', index=False, encoding='utf-8-sig')
+print("所選日期範圍的資料已儲存到 './stock_price/sii_stock_price_select.csv' 檔案中。")
