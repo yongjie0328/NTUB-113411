@@ -2,7 +2,7 @@ import mysql.connector
 import pandas as pd
 
 # 讀取 CSV 檔案到 DataFrame
-df = pd.read_csv(r"C:\Users\yingh\Desktop\python爬蟲\stock_news\tw_stock_processed.csv")
+df = pd.read_csv(r"C:\Users\yingh\Desktop\python爬蟲\stock_news\tw_stock_news.csv")
 
 # MySQL連線設置
 host = '140.131.114.242'

@@ -87,13 +87,13 @@ if __name__ == "__main__":
 
     if newslist_info_all is not None:
         save_to_csv(newslist_info_all)
-        print("資料已成功存入 CSV 檔案。")
+        print("國內新聞的資料已成功存入 './stock_news/tw_stock_news.csv' 檔案。")
 
     df = pd.read_csv('./stock_news/tw_stock_news.csv')
 
     # 將所有NaN值替換為"無"
     df.fillna('無', inplace=True)
 
-    df.to_csv('./stock_news/tw_stock_processed.csv', index=False, encoding='utf-8-sig')
-    print("已成功處理並儲存檔案。")
+    df.to_csv('./stock_news/tw_stock_news.csv', index=False, encoding='utf-8-sig')
+    print("修改後的資料已成功存回 './stock_news/tw_stock_news.csv' 檔案中。")
 
