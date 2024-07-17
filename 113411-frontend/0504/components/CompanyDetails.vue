@@ -7,7 +7,7 @@
       <button class="nav-item" :class="{ 'active': selectedNavItem === 'historical-info' }"
         @click="showTSMInfo('historical-info')">歷史資料</button>
       <button class="nav-item" :class="{ 'active': selectedNavItem === 'technical-analysis' }"
-        @click="showTSMInfo('technical-analysis')">技術分析</button>
+        @click="showTSMInfo('technical-analysis')">技術分析</button> 
       <button class="nav-item" :class="{ 'active': selectedNavItem === 'financial-analysis' }"
         @click="showTSMInfo('financial-analysis')">財務分析</button>
       <button class="nav-item" :class="{ 'active': selectedNavItem === 'trend-prediction' }"
@@ -83,7 +83,7 @@
         <div v-else-if="selectedNavItem === 'technical-analysis'">
           <div class="technical-analysis-container">
             <h2>技術分析</h2>
-            <p>這裡顯示個股的技術分析或其他相關資訊。</p>
+            
 
             <div class="content-container">
               <div class="buttons-container">
@@ -148,24 +148,24 @@
         <div v-else-if="selectedNavItem === 'financial-analysis'">
           <div class="financial-analysis-container">
             <h2>財務分析</h2>
-            <p>這裡顯示個股的財務分析或其他相關資訊。</p>
+           
 
             <div class="content-container">
               <div class="buttons-container">
                 <!-- Monthly Revenue Button -->
-                <button @click="toggleContent('showMA')">月營收</button>
+                <button @click="toggleContent('showMA1')">月營收</button>
                 <!-- Profitability Button -->
                 <button @click="toggleContent('showPB')">獲利能力</button>
                 <!-- Management Capability Button -->
                 <button @click="toggleContent('showMC')">經營能力</button>
                 <!-- Shareholder Rights Button -->
-                <button @click="toggleContent('showSR')">股東權利</button>
+                <button @click="toggleContent('showSR')">股東權益</button>
                 <!-- Solvency Button -->
                 <button @click="toggleContent('showSol')">償債能力</button>
               </div>
 
               <div class="display-container">
-                <div v-if="showMA" class="content-box">
+                <div v-if="showMA1" class="content-box">
                   <h3>月營收</h3>
                   <ul>
                     <li>
@@ -241,19 +241,18 @@ export default {
   data() {
     return {
       isLoading: false,
-      stockInfo: null,
-      otcInfo: null,
+      company: null,
       error: null,
-      selectedNavItem: 'sii', // Initialize selected navigation item
+      selectedNavItem: 'basic-info',
+      showMA: false,
+      showRSI: false,
+      showKD: false,
+      showMACD: false,
       showMA1: false,
       showPB: false,
       showMC: false,
       showSR: false,
       showSol: false,
-      showMA: false,
-      showRSI: false,
-      showKD: false,
-      showMACD: false
     };
   },
   methods: {
@@ -261,11 +260,24 @@ export default {
       this.isLoading = true;
       let url = '';
       switch (this.selectedNavItem) {
-        case 'sii':
+        case 'basic-info':
           url = 'http://172.16.66.118:8000/STOCK/data?table_name=sii_stock_info';
           break;
-        case 'otc':
-          url = 'http://172.16.66.118:8000/STOCK/data?table_name=otc_stock_info';
+        case 'historical-info':
+          // Set URL for historical info
+          url = 'http://172.16.66.118:8000/STOCK/data?table_name=historical_info';
+          break;
+        case 'technical-analysis':
+          // Set URL for technical analysis
+          url = 'http://172.16.66.118:8000/STOCK/data?table_name=technical_analysis';
+          break;
+        case 'financial-analysis':
+          // Set URL for financial analysis
+          url = 'http://172.16.66.118:8000/STOCK/data?table_name=financial_analysis';
+          break;
+        case 'trend-prediction':
+          // Set URL for trend prediction
+          url = 'http://172.16.66.118:8000/STOCK/data?table_name=trend_prediction';
           break;
         default:
           this.isLoading = false;
@@ -274,7 +286,7 @@ export default {
 
       axios.get(url)
         .then(response => {
-          this.stockInfo = response.data; // Assume the response data is in the required format
+          this.company = response.data; // Assume the response data is in the required format
           this.isLoading = false;
         })
         .catch(error => {
@@ -290,18 +302,16 @@ export default {
     },
 
     toggleContent(key) {
-      // Reset all properties to false
+      this.showMA = false;
+      this.showRSI = false;
+      this.showKD = false;
+      this.showMACD = false;
       this.showMA1 = false;
       this.showPB = false;
       this.showMC = false;
       this.showSR = false;
       this.showSol = false;
-      this.showMA = false;
-      this.showRSI = false;
-      this.showKD = false;
-      this.showMACD = false;
 
-      // Toggle the specific property
       this[key] = !this[key];
     }
   },
@@ -309,11 +319,16 @@ export default {
     this.fetchData(); // Load data when the component mounts
   }
 }
+
+
 </script>
 
 
-
 <style scoped>
+
+.sidebar left{
+  margin-top: 60px;
+}
 
 .company-table {
   width: 100%;
@@ -351,6 +366,7 @@ export default {
   padding: 10px; /* 内边距 */
   cursor: pointer; /* 指针样式 */
   border: 1px solid #ccc; /* 边框样式 */
+  margin: 50px;
 }
 
 .nav-item.active {

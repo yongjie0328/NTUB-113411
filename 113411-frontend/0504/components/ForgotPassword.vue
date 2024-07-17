@@ -5,6 +5,12 @@
         <input type="email" v-model="email" placeholder="請輸入你的電子郵件" required>
         <button type="submit">提交</button>
       </form>
+    
+      <h1>輸入驗證碼</h1>
+      <form @submit.prevent="submittext">
+        <input type="text" v-model="email" placeholder="請輸入你的驗證碼" required>
+        <button type="submit">提交</button>
+      </form>
     </div>
   </template>
   

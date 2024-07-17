@@ -1,7 +1,8 @@
 <template>
   <div class="news-and-cloud">
+
     <div class="news-section">
-      <h2>新聞區</h2>
+      <h1>新聞區</h1>
       <!-- 添加兩個按鈕 -->
       <div class="news-buttons">
         <button :class="{ 'active': selectedNews === 'domestic' }" @click="showNews('domestic')">國內新聞</button>
@@ -10,18 +11,72 @@
       <!-- 根據 selectedNews 顯示新聞 -->
       <div v-if="selectedNews === 'domestic'">
         <div class="news-card">
-          <h3><a href="https://news.cnyes.com/news/id/5541357" target="_blank" rel="noopener noreferrer" class="newstit">〈台股盤後〉台積電、聯發科遭殺尾盤 終場跌98點 月線收紅留長下影線</a></h3>
-          <p>摘要:台股今日呈現高檔震盪，開盤一度翻黑，不過盤中再度翻紅，最高來到 20559 點，持續挑戰前高 20883 點，不過權值股較無表現，且台積電與聯發科遭殺尾盤，終場下跌 98.92 點，以 20396.6 點作收，成交量 3575.85 億元。</p>
-          <P>發布時間:2024-04-30 14:15:17</P>
-          <span class="positive">關鍵字: ['台股盤後', '台積電', '聯發科', '權值股', '綠能', '520行情']</span>
+          <h3><a href="https://news.cnyes.com/news/id/5585734" target="_blank" rel="noopener noreferrer"
+              class="newstit">《價值型投資 最新產業研究報告》COMPUTEX 2024正式起跑 輝達執行長黃仁勳先行點名圓剛</a></h3>
+          <p>摘要:無</p>
+          <P>發布時間:2024-06-04 14:02:26</P>
+          <span class="positive">關鍵字: ['蔡慶龍', '價值型投資', '圓剛', '主流績優股', '趨勢分析', '摩爾投顧']</span>
         </div>
         <div class="news-card">
-          <h3><a href="https://news.cnyes.com/news/id/5540220" target="_blank" rel="noopener noreferrer" class="newstit">五一調查：7成上班族隨時開機待命 爆肝業前三名：科技、金融及傳播</a></h3>
-          <p>摘要:yes123 求職網進行「職場爆肝壓力指數與勞動節願望調查」，結果今 (30) 日出爐，統計指出上班族七成隨時開機待命，有 94% 下班曾手機辦公，每月變相加班 13 小時。自認工作壓力較高的業種主要有：「科技資訊」、「金融保險與會計</p>
-          <P>發布時間:2024-04-30 11:24:35</P>
-          <span class="positive">關鍵字: ['勞動節', '人力銀行', 'yes123']</span>
+          <h3><a href="https://news.cnyes.com/news/id/5585713" target="_blank" rel="noopener noreferrer"
+              class="newstit">〈台股盤後〉輝達夥伴、權值股漲累了  回檔修正跌180點收21356點</a></h3>
+          <p>摘要:台股昨 (3) 日大漲超過 300 點，今 (4) 日開高走低回檔修正，跌逾 200 點，權值股以及輝達 (NVDA-US) 供應鏈夥伴普遍走弱，終場跌 180.14 點或 0.84%，以 21356.62 點作收，成交量 4419.57 億元。</p>
+          <P>發布時間:2024-06-04 14:03:20</P>
+          <span class="positive">關鍵字:['台股盤後', '台積電', '輝達', 'AI']</span>
         </div>
+        <div class="news-card">
+          <h3><a href="https://news.cnyes.com/news/id/5585672" target="_blank" rel="noopener noreferrer"
+              class="newstit">〈COMPUTEX〉廣運在智慧倉儲系統接單強勁 估將超越逾50%營收比重</a></h3>
+          <p>摘要:除新一代水冷散熱系統及半導體自動化設備之外，廣運 (6125-TW) 今 (4) 日出席台北 COMPUTEX 展，總經理柯智鈞也對包含客製化工廠自動化生產線、自動倉儲系統、電商物流發貨中心等的大量接單表示樂觀。</p>
+          <P>發布時間:2024-06-04 13:12:25</P>
+          <span class="positive">關鍵字:['廣運', '鴻海', '巨大', 'COMPUTEX']</span>
+        </div>
+        <div class="news-card">
+          <h3><a href="https://news.cnyes.com/news/id/5585671" target="_blank" rel="noopener noreferrer"
+              class="newstit">〈COMPUTEX〉黃仁勳參訪鴻佰攤位 稱鴻海是輝達GB200最重要合作夥伴</a></h3>
+          <p>摘要:黃仁勳參訪鴻佰攤位 稱鴻海是輝達 GB200 最重要的合作夥伴</p>
+          <P>發布時間:2024-06-04 13:48:44</P>
+          <span class="positive">關鍵字:['輝達', '黃仁勳', '鴻海', '鴻佰', 'GB200']</span>
+        </div>
+         <div class="news-card">
+          <h3><a href="https://news.cnyes.com/news/id/5585651" target="_blank" rel="noopener noreferrer"
+              class="newstit">〈COMPUTEX〉長榮航攜手貿協參展 擴大爭取企業戶</a></h3>
+          <p>摘要:長榮航與外貿協會攜手參加電腦展 擴大爭取企業戶</p>
+          <P>發布時間:2024-06-04 12:58:21</P>
+          <span class="positive">關鍵字:['長榮航', '外貿協會', 'computex', '電腦展']</span>
+        </div>
+        <div class="news-card">
+          <h3><a href="https://news.cnyes.com/news/id/5585620" target="_blank" rel="noopener noreferrer"
+              class="newstit">鉅亨速報 - Factset 最新調查：和碩(4938-TW)目標價調升至93.5元，幅度約3.21%</a></h3>
+          <p>摘要:FactSet 最新調查：和碩(4938-TW)目標價調升，最高估值、最低估值、中位數、綜合評級、近5日股價、大盤表現、即時新聞資訊。</p>
+          <P>發布時間:2024-06-04 13:00:45</P>
+          <span class="positive">關鍵字:['AI', '求職', '1111']</span>
+        </div>
+        <div class="news-card">
+          <h3><a href="https://news.cnyes.com/news/id/5585573" target="_blank" rel="noopener noreferrer"
+              class="newstit">〈COMPUTEX〉輝達未來5年在台設立研發中心 黃仁勳：這三地是選項</a></h3>
+          <p>摘要:輝達 (NVDA-US) 執行長黃仁勳今 (4) 日到 COMPUTEX 與供應鏈夥伴們會面，黃仁勳接受媒體訪問談到未來 5 年將在台灣設立、投資研發中心，黃仁勳強調，台灣已經輝達很大的基地，同時也透露台北、台南以及高雄都會是選項。</p>
+          <P>發布時間:2024-06-04 12:16:07</P>
+          <span class="positive">關鍵字:['黃仁勳', 'AI', '伺服器', 'COMPUTEX']</span>
+        </div>
+        <div class="news-card">
+          <h3><a href="https://news.cnyes.com/news/id/5585542" target="_blank" rel="noopener noreferrer"
+              class="newstit">廣運籌資擬發行 6 億元無擔保CB明起競拍 6/21掛牌</a></h3>
+          <p>摘要:廣運業績可望升同時，廣運向金管會送件辦理發行 1 萬張的現增股，同時，擬發行 6 億元的無擔保可轉換公司債 (CB) 已經申報生效，其中，擬發行 CB 籌資案完成訂價，轉換價訂為 114 元。</p>
+          <P>發布時間:2024-06-04 11:48:37</P>
+          <span class="positive">關鍵字:['廣運', '辛耘', 'CB', '籌資']</span>
+        </div>
+        <div class="news-card">
+          <h3><a href="https://news.cnyes.com/news/id/5585540" target="_blank" rel="noopener noreferrer"
+              class="newstit">Gogoro獲潤泰注資5000萬美元 推展全球業務</a></h3>
+          <p>摘要:Gogoro 獲潤泰注資 5000 萬美元 推展全球業務</p>
+          <P>發布時間:2024-06-04 11:40:03</P>
+          <span class="positive">關鍵字:['gogoro', '潤泰', '電動車', '充電', '機車']</span>
+        </div>
+      
       </div>
+
+
       <div v-if="selectedNews === 'international'">
         <div class="news-card">
           <h3><a href="#" target="_blank" rel="noopener noreferrer" class="newstit">國外新聞標題</a></h3>
@@ -41,27 +96,9 @@
           <P>發布時間:</P>
           <span class="negative">情緒分析: 負面</span>
         </div>
-        <div class="news-card">
-          <h3><a href="#" target="_blank" rel="noopener noreferrer" class="newstit">國外新聞標題</a></h3>
-          <p>摘要: </p>
-          <P>發布時間:</P>
-          <span class="negative">情緒分析: 負面</span>
-        </div>
-        <div class="news-card">
-          <h3><a href="#" target="_blank" rel="noopener noreferrer" class="newstit">國外新聞標題</a></h3>
-          <p>摘要: </p>
-          <P>發布時間:</P>
-          <span class="negative">情緒分析: 負面</span>
-        </div>
-        <div class="news-card">
-          <h3><a href="#" target="_blank" rel="noopener noreferrer" class="newstit">國外新聞標題</a></h3>
-          <p>摘要: </p>
-          <P>發布時間:</P>
-          <span class="negative">情緒分析: 負面</span>
-        </div>
+
       </div>
     </div>
-
     <!-- 右側文字雲區域 -->
     <div class="word-cloud-container">
       <div class="word-cloud">
@@ -72,6 +109,7 @@
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -96,19 +134,19 @@ export default {
   display: flex;
   justify-content: space-between;
   padding: 20px;
-  height: 79vh; /* 佔滿屏幕高度 */
-  overflow-y: auto; /* 垂直滾動條 */
+  margin: 20px
 }
 
-
 .news-section {
-  flex: 3; /* 新聞區域佔3個單位 */
+  flex: 3;
+  /* 新聞區域佔3個單位 */
   margin-right: 20px;
 }
 
 .news-buttons {
   display: flex;
-  justify-content: flex-start; /* 左對齊按鈕 */
+  justify-content: flex-start;
+  /* 左對齊按鈕 */
   margin-bottom: 15px;
 }
 
@@ -132,14 +170,20 @@ export default {
 }
 
 .word-cloud-container {
-  flex: 1; /* 文字雲部分佔1個單位 */
+  flex: 1;
+  /* 文字雲部分佔1個單位 */
   display: flex;
-  justify-content: center;
-  align-items: center; /* 置中對齊 */
+  /* align-items: center; */
+  /* 移除此行 */
+  align-self: flex-start;
+  /* 新添加的行 */
+  margin-top: 20px;
 }
 
 .word-cloud {
-  width: 300px; /* 方框寬度 */
+  margin-top: 120px;
+  width: 300px;
+  /* 方框寬度 */
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 80px;
@@ -174,7 +218,7 @@ export default {
   color: gray;
 }
 
-.newstit{
+.newstit {
   color: black;
   text-decoration: none;
 }
