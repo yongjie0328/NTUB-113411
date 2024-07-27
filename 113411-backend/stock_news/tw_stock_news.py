@@ -6,7 +6,7 @@ import html
 import re
 
 def clean_html_tags(text):
-    """ 去除HTML标签 """
+    """ 去除HTML標籤 """
     clean = re.compile('<.*?>')
     return re.sub(clean, '', text)
 
@@ -14,8 +14,8 @@ def save_to_csv(newslist_info, filename='./stock_news/tw_stock_news.csv'):
     data = []
     for page in newslist_info:
         for news in page["data"]:
-            content = html.unescape(news['content'])  # 将 HTML 实体转换为普通文本
-            content = clean_html_tags(content)  # 去除 HTML 标签
+            content = html.unescape(news['content'])  # 將 HTML 實體轉換為普通文本
+            content = clean_html_tags(content)  # 去除 HTML 標籤
             data.append({
                 '新聞編號': news['newsId'],
                 '網址': f'https://news.cnyes.com/news/id/{news["newsId"]}',
@@ -74,8 +74,8 @@ if __name__ == "__main__":
         if newslist_info is not None:
             print(f'搜尋結果 > 當前頁數：{newslist_info["page"]}')
             for news in newslist_info["data"]:
-                content = html.unescape(news["content"])  # 将 HTML 实体转换为普通文本
-                content = clean_html_tags(content)  # 去除 HTML 标签
+                content = html.unescape(news["content"])  # 將 HTML 實體轉換為普通文本
+                content = clean_html_tags(content)  # 去除 HTML 標籤
                 print(f'    ------------ {news["newsId"]} ------------')
                 print(f'    新聞 > 網址：https://news.cnyes.com/news/id/{news["newsId"]}')
                 print(f'    新聞 > 標題：{news["title"]}')
@@ -96,4 +96,3 @@ if __name__ == "__main__":
 
     df.to_csv('./stock_news/tw_stock_news.csv', index=False, encoding='utf-8-sig')
     print("修改後的資料已成功存回 './stock_news/tw_stock_news.csv' 檔案中。")
-
