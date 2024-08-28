@@ -1,175 +1,105 @@
 <template>
   <div class="discussion-board">
-    <form @submit.prevent="publishArticle" class="post-form">
-      <label for="article_title">文章標題</label>
-      <input type="text" id="article_title" v-model="articleTitle" required>
-      <br>
-      <label for="article_content">文章內容</label>
-      <textarea id="article_content" v-model="articleContent" required></textarea>
-      <button type="submit" class="submit-btn">發布</button>
-    </form>
-
-    <div class="articles">
-      <h2>所有文章</h2>
-      <div v-if="loading">載入中...</div>
-      <div v-else-if="articles.length === 0">尚無文章</div>
-      <div v-else>
-        <div v-for="article in articles" :key="article[0]" class="article">
-          <h3>標題:{{ article[1] }}</h3>
-          <p>內容:{{ article[2] }}</p> <!-- Display the content at index 2 -->
-          <p class="article-meta">由 {{ article[4] }} 發佈於 {{ new Date(article[5]).toLocaleString() }}</p>
-        </div>
+    <h1>討論區</h1>
+    <div class="posts">
+      <!-- 顯示所有帖子的區域 -->
+      <div class="post" v-for="post in posts" :key="post.id">
+        <h3>{{ post.author }}</h3>
+        <p>{{ post.content }}</p>
       </div>
     </div>
+
+    <!-- 固定在底部的發布表單 -->
+    <form @submit.prevent="submitPost" class="post-form">
+      <textarea v-model="newPost.content" placeholder="寫點什麼..."></textarea>
+      <button type="submit" class="submit-btn">發布</button>
+    </form>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
-      articleTitle: '',
-      articleContent: '',
-      articles: [],  // To store articles fetched from the backend
-      loading: false
+      posts: [], // 用於顯示的帖子
+      newPost: {
+        content: '' // 新發送的帖子內容
+      }
     };
   },
-  created() {
-    this.fetchArticles();
+  mounted() {
+    // 組件掛載時，獲取所有貼文
+    this.fetchPosts();
   },
   methods: {
-    getCookie(name) {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop().split(';').shift();
+    // 從後端獲取帖子列表
+    fetchPosts() {
+      axios.get('/api/posts') // 從後端獲取貼文
+        .then((response) => {
+          this.posts = response.data; // 將貼文數據存儲到 posts 陣列
+        })
+        .catch((error) => {
+          console.error('Error fetching posts:', error);
+        });
     },
-    publishArticle() {
-      const account = this.getCookie('account');
-      if (!account) {
-        alert('無法獲取用戶帳號。請確保您已登入。');
-        return;
+    // 發布新貼文
+    submitPost() {
+      if (this.newPost.content.trim()) {
+        const post = {
+          author: '您的用戶名', // 替換成適當的用戶名
+          content: this.newPost.content
+        };
+        axios.post('/api/posts', post)
+          .then((response) => {
+            // 將新的貼文添加到 posts 列表的最後，保持順序
+            this.posts.push(response.data);
+            // 清空發布區
+            this.newPost.content = '';
+          })
+          .catch((error) => {
+            console.error('Error posting:', error);
+          });
       }
-
-      if (!this.articleTitle || !this.articleContent) {
-        alert('文章標題和內容不能為空。');
-        return;
-      }
-
-      const data = {
-        article_title: this.articleTitle,
-        article_content: this.articleContent,
-        account: account
-      };
-
-      fetch('http://172.16.66.118:8000/ARTICLE/publish', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-        credentials: 'include'
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('文章發布失敗。請再試一次。');
-        }
-        return response.json();
-      })
-      .then(responseData => {
-        if (responseData.success) {
-          alert('文章發布成功！');
-          this.articleTitle = '';
-          this.articleContent = '';
-          this.fetchArticles();  // Refresh the list of articles after publishing a new one
-        } else {
-          alert(responseData.message || '由於未知錯誤，文章未能發布。');
-        }
-      })
-      .catch(error => {
-        console.error('文章發布時發生錯誤：', error);
-        alert('發布您的文章時出錯。請稍後再試。');
-      });
-    },
-    fetchArticles() {
-    this.loading = true;
-    fetch('http://192.168.50.174:8000/ARTICLE/data', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        credentials: 'include'
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('無法獲取文章列表。請再試一次。');
-        }
-        return response.json();
-    })
-    .then(responseData => {
-        this.articles = responseData.content || [];
-        this.loading = false;
-    })
-    .catch(error => {
-        console.error('獲取文章列表時發生錯誤：', error);
-        alert('獲取文章列表時出錯。請稍後再試。');
-        this.loading = false;
-    });
-}
-
+    }
   }
-};
+}
 </script>
 
-<style scoped>
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  background-color: #f8f8f8;
-  font-family: Arial, sans-serif;
-}
-
+<style>
 .discussion-board {
-  max-width: 600px;
-  width: 100%;
-  margin: 30px auto;
+  max-width: 800px;
+  margin: 30px auto 20px auto; /* 在導覽列和討論區之間留出60px的距離 */
   padding: 20px;
-  margin-top: 100px;
-  background-color: #ffffff;
+  background-color: #f0f0f0;
   border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  position: relative;
 }
 
 .post-form {
-  display: flex;
-  flex-direction: column;
+  position: sticky;
+  bottom: 0;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  border-radius: 10px 10px 0 0;
+  z-index: 10;
 }
 
-label {
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: #333;
-}
-
-input[type="text"],
 textarea {
   width: 100%;
+  margin-bottom: 10px;
   padding: 10px;
-  margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 16px;
-}
-
-textarea {
   resize: vertical;
 }
 
 .submit-btn {
-  padding: 10px 20px;
-  background-color: #7eb6f3;
+  padding: 8px 16px;
+  background-color: #007bff;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -178,32 +108,26 @@ textarea {
 }
 
 .submit-btn:hover {
-  background-color: #2c82de;
+  background-color: #0056b3;
 }
 
-.articles {
-  margin-top: 30px;
+.posts {
+  margin-bottom: 70px; /* 為固定表單預留空間 */
 }
 
-.article {
+.post {
   background-color: #f9f9f9;
-  padding: 15px;
-  border: 1px solid #ddd;
+  margin-top: 10px;
+  padding: 10px;
   border-radius: 5px;
-  margin-bottom: 10px;
+  border: 1px solid #ddd;
 }
 
-.article h3 {
+.post h3 {
   margin: 0;
 }
 
-.article p {
-  margin: 10px 0 0 0;
-}
-
-.article-meta {
-  margin-top: 10px;
-  font-size: 14px;
-  color: #666;
+.post p {
+  margin-top: 5px;
 }
 </style>
