@@ -1,0 +1,122 @@
+1 Failed download:
+['1240.TW']: Exception('%ticker%: No timezone found, symbol may be delisted')
+警告: 股票 1240.TW (茂生農經) 的數據為空或無法下載。
+[*********************100%%**********************]  1 of 1 completed
+
+1 Failed download:
+['1259.TW']: Exception('%ticker%: No timezone found, symbol may be delisted')
+警告: 股票 1259.TW (安心) 的數據為空或無法下載。
+[*********************100%%**********************]  1 of 1 completed
+
+1 Failed download:
+['1264.TW']: Exception('%ticker%: No timezone found, symbol may be delisted')
+警告: 股票 1264.TW (德麥) 的數據為空或無法下載。
+[*********************100%%**********************]  1 of 1 completed
+
+1 Failed download:
+['1268.TW']: Exception('%ticker%: No timezone found, symbol may be delisted')
+警告: 股票 1268.TW (漢來美食) 的數據為空或無法下載。
+[*********************100%%**********************]  1 of 1 completed
+
+1 Failed download:
+['1336.TW']: Exception('%ticker%: No timezone found, symbol may be delisted')
+警告: 股票 1336.TW (台翰) 的數據為空或無法下載。
+[*********************100%%**********************]  1 of 1 completed
+
+1 Failed download:
+['1565.TW']: Exception('%ticker%: No timezone found, symbol may be delisted')
+警告: 股票 1565.TW (精華) 的數據為空或無法下載。
+[*********************100%%**********************]  1 of 1 completed
+
+1 Failed download:
+['1569.TW']: Exception('%ticker%: No timezone found, symbol may be delisted')
+警告: 股票 1569.TW (濱川) 的數據為空或無法下載。
+[*********************100%%**********************]  1 of 1 completed
+
+1 Failed download:
+['1570.TW']: Exception('%ticker%: No timezone found, symbol may be delisted')
+警告: 股票 1570.TW (力肯) 的數據為空或無法下載。
+[*********************100%%**********************]  1 of 1 completed
+
+1 Failed download:
+['1580.TW']: Exception('%ticker%: No timezone found, symbol may be delisted')
+警告: 股票 1580.TW (新麥) 的數據為空或無法下載。
+[*********************100%%**********************]  1 of 1 completed
+
+1 Failed download:
+['1584.TW']: Exception('%ticker%: No timezone found, symbol may be delisted')
+警告: 股票 1584.TW (精剛) 的數據為空或無法下載。
+[*********************100%%**********************]  1 of 1 completed
+
+1 Failed download:
+['1586.TW']: Exception('%ticker%: No timezone found, symbol may be delisted')
+警告: 股票 1586.TW (和勤) 的數據為空或無法下載。
+[*********************100%%**********************]  1 of 1 completed
+
+1 Failed download:
+['1591.TW']: Exception('%ticker%: No timezone found, symbol may be delisted')
+警告: 股票 1591.TW (駿吉-KY) 的數據為空或無法下載。
+[*********************100%%**********************]  1 of 1 completed
+
+1 Failed download:
+['1593.TW']: Exception('%ticker%: No timezone found, symbol may be delisted')
+警告: 股票 1593.TW (祺驊) 的數據為空或無法下載。
+Exception ignored in: <function Image.__del__ at 0x0000024CF387CD60>
+Traceback (most recent call last):
+  File "C:\Users\yingh\AppData\Local\Programs\Python\Python311\Lib\tkinter\__init__.py", line 4080, in __del__
+    self.tk.call('image', 'delete', self.name)
+RuntimeError: main thread is not in main loop
+Exception ignored in: <function Variable.__del__ at 0x0000024CF27D6160>
+Traceback (most recent call last):
+  File "C:\Users\yingh\AppData\Local\Programs\Python\Python311\Lib\tkinter\__init__.py", line 410, in __del__
+    if self._tk.getboolean(self._tk.call("info", "exists", self._name)):
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: main thread is not in main loop
+Exception ignored in: <function Variable.__del__ at 0x0000024CF27D6160>
+Traceback (most recent call last):
+  File "C:\Users\yingh\AppData\Local\Programs\Python\Python311\Lib\tkinter\__init__.py", line 410, in __del__
+    if self._tk.getboolean(self._tk.call("info", "exists", self._name)):
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: main thread is not in main loop
+Exception ignored in: <function Variable.__del__ at 0x0000024CF27D6160>
+Traceback (most recent call last):
+  File "C:\Users\yingh\AppData\Local\Programs\Python\Python311\Lib\tkinter\__init__.py", line 410, in __del__
+    if self._tk.getboolean(self._tk.call("info", "exists", self._name)):
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: main thread is not in main loop
+Exception ignored in: <function Variable.__del__ at 0x0000024CF27D6160>
+Traceback (most recent call last):
+  File "C:\Users\yingh\AppData\Local\Programs\Python\Python311\Lib\tkinter\__init__.py", line 410, in __del__
+    if self._tk.getboolean(self._tk.call("info", "exists", self._name)):
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: main thread is not in main loop
+Exception ignored in: <function Image.__del__ at 0x0000024CF387CD60>
+Traceback (most recent call last):
+  File "C:\Users\yingh\AppData\Local\Programs\Python\Python311\Lib\tkinter\__init__.py", line 4080, in __del__
+    self.tk.call('image', 'delete', self.name)
+RuntimeError: main thread is not in main loop
+Exception ignored in: <function Variable.__del__ at 0x0000024CF27D6160>
+Traceback (most recent call last):
+  File "C:\Users\yingh\AppData\Local\Programs\Python\Python311\Lib\tkinter\__init__.py", line 410, in __del__
+    if self._tk.getboolean(self._tk.call("info", "exists", self._name)):
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: main thread is not in main loop
+Exception ignored in: <function Variable.__del__ at 0x0000024CF27D6160>
+Traceback (most recent call last):
+  File "C:\Users\yingh\AppData\Local\Programs\Python\Python311\Lib\tkinter\__init__.py", line 410, in __del__
+    if self._tk.getboolean(self._tk.call("info", "exists", self._name)):
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: main thread is not in main loop
+Exception ignored in: <function Variable.__del__ at 0x0000024CF27D6160>
+Traceback (most recent call last):
+  File "C:\Users\yingh\AppData\Local\Programs\Python\Python311\Lib\tkinter\__init__.py", line 410, in __del__
+    if self._tk.getboolean(self._tk.call("info", "exists", self._name)):
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: main thread is not in main loop
+Exception ignored in: <function Variable.__del__ at 0x0000024CF27D6160>
+Traceback (most recent call last):
+  File "C:\Users\yingh\AppData\Local\Programs\Python\Python311\Lib\tkinter\__init__.py", line 410, in __del__
+    if self._tk.getboolean(self._tk.call("info", "exists", self._name)):
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: main thread is not in main loop
+Tcl_AsyncDelete: async handler deleted by the wrong thread
