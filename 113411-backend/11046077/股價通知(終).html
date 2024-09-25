@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>股票價格通知系統</title>
+</head>
+<body>
+    <h1>股票價格通知系統</h1>
+    <form id="stockForm">
+        <label for="ticker">股票代碼：</label>
+        <input type="text" id="ticker" name="ticker" required><br><br>
+        <label for="target_price">目標價格：</label>
+        <input type="number" id="target_price" name="target_price" required><br><br>
+        <button type="submit">開始追蹤</button>
+    </form>
+
+    <div id="response"></div>
+
+    <script>
+        document.getElementById('stockForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const ticker = document.getElementById('ticker').value;
+            const target_price = document.getElementById('target_price').value;
+
+            fetch(`http://127.0.0.1:5000/track?ticker=${ticker}&target_price=${target_price}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('response').innerHTML = '伺服器回應：' + data.message;
+                })
+                .catch(error => {
+                    console.error('錯誤:', error);
+                    document.getElementById('response').innerHTML = '錯誤：' + error;
+                });
+        });
+    </script>
+</body>
+</html>
