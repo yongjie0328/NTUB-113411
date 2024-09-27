@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>風險承受度評估</title>
+</head>
+<body>
+    <h1>風險承受度評估</h1>
+    <form action="/result" method="post">
+        <label>您每月的收入與支出情況如何？</label><br>
+        <input type="radio" name="monthly_savings" value="1"> 每月幾乎無結餘，甚至入不敷出<br>
+        <input type="radio" name="monthly_savings" value="2"> 有少量結餘，能存下一些錢<br>
+        <input type="radio" name="monthly_savings" value="3"> 每月有較大結餘，存款穩定增加<br><br>
+
+        <label>您的投資經驗有多少年？</label><br>
+        <input type="radio" name="experience" value="1"> 無經驗<br>
+        <input type="radio" name="experience" value="2"> 1 - 5 年<br>
+        <input type="radio" name="experience" value="3"> 超過 5 年<br><br>
+
+        <label>您的投資期限是多久？</label><br>
+        <input type="radio" name="investment_goal" value="1"> 少於 3 年<br>
+        <input type="radio" name="investment_goal" value="2"> 3 - 10 年<br>
+        <input type="radio" name="investment_goal" value="3"> 超過 10 年<br><br>
+
+        <label>您能承受的最大損失是多少？</label><br>
+        <input type="radio" name="risk_preference" value="1"> 5% 以下<br>
+        <input type="radio" name="risk_preference" value="2"> 5% - 15%<br>
+        <input type="radio" name="risk_preference" value="3"> 超過 15%<br><br>
+
+        <input type="submit" value="提交">
+    </form>
+</body>
+</html>
