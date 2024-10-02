@@ -79,23 +79,30 @@
 
       <div v-if="selectedNews === 'international'">
         <div class="news-card">
-          <h3><a href="#" target="_blank" rel="noopener noreferrer" class="newstit">國外新聞標題</a></h3>
-          <p>摘要: </p>
-          <P>發布時間:</P>
+          <h3><a href="https://finance.yahoo.com/news/mccormick-stock-gains-q3-earnings-122822550.html" target="_blank" rel="noopener noreferrer" class="newstit">McCormick Stock Gains After Q3 Earnings Beat, Raised EPS Outlook</a></h3>
+          <p>摘要:McCormick & Company (NYSE:MKC) shares are trading higher after the company reported its third-quarter results and raised its full-year EPS outlook. The company registered quarterly </p>
+          <P>發布時間:Tue, October 1, 2024</P>
           <span class="neutral">情緒分析: 中立</span>
         </div>
         <div class="news-card">
-          <h3><a href="#" target="_blank" rel="noopener noreferrer" class="newstit">國外新聞標題</a></h3>
-          <p>摘要: </p>
-          <P>發布時間:</P>
-          <span class="positive">情緒分析: 正面</span>
+          <h3><a href="https://finance.yahoo.com/news/typhoon-krathon-shuts-taiwan-2-121906622.html" target="_blank" rel="noopener noreferrer" class="newstit">Typhoon Krathon Shuts Taiwan? $2.5 Trillion Stock Market</a></h3>
+          <p>摘要: (Bloomberg) -- Taiwan will close its $2.5 trillion stock market as Super Typhoon Krathon approaches the island with strong winds and heavy rain.Most Read from BloombergA 7,000-Year-Old City Emerges as a Haven from Dubai? Sky-High RentsGang Violence Is Moving to the Amazon? Fast-Growing CitiesNew Rowhouses in London That Offer a Bridge to the 19th CenturyClimate Migrants Stand to Overwhelm World? MegacitiesA Housing Crisis Brews in Rwanda? Capital CityThe market will not conduct securities, c</p>
+          <P>發布時間:Tue, October 1, 2024</P>
+          <span class="positive">情緒分析: 中立</span>
         </div>
         <div class="news-card">
-          <h3><a href="#" target="_blank" rel="noopener noreferrer" class="newstit">國外新聞標題</a></h3>
-          <p>摘要: </p>
-          <P>發布時間:</P>
+          <h3><a href="https://finance.yahoo.com/news/jobs-report-test-stock-bull-120000661.html" target="_blank" rel="noopener noreferrer" class="newstit">Jobs Report to Test Stock Bull and Fixed Income ETFs</a></h3>
+          <p>摘要:All eyes are on Friday? U.S. Nonfarm Payrolls Report. </p>
+          <P>發布時間:Tue, October 1, 2024</P>
+          <span class="neutral">情緒分析: 正面</span>
+        </div>
+        <div class="news-card">
+          <h3><a href="https://finance.yahoo.com/news/live/stock-market-today-dow-futures-slip-sp-500-holds-steady-with-fresh-data-on-deck-110019547.html" target="_blank" rel="noopener noreferrer" class="newstit">Stock market today: Dow futures slip, S&P 500 holds steady with fresh data on deck</a></h3>
+          <p>摘要:Investors are looking to job openings and manufacturing data to provide clues to rate cuts as they digest Powell's latest comments. </p>
+          <P>發布時間:Tue, October 1, 2024</P>
           <span class="negative">情緒分析: 負面</span>
         </div>
+
 
       </div>
     </div>
@@ -104,13 +111,12 @@
       <div class="word-cloud">
         <h2>文字雲</h2>
         <div class="cloud-placeholder">
-          <p>這裡是文字雲的範例位置。</p>
-          <!-- 您可以在此嵌入文字雲組件 -->
+          <img :src="wordCloudImage" @error="handleImageError" alt="Word Cloud Image" />
         </div>
       </div>
     </div>
-
   </div>
+
 </template>
 
 <script>
@@ -118,35 +124,48 @@ export default {
   name: 'NewsAndCloud',
   data() {
     return {
-      selectedNews: 'domestic', // 初始顯示國內新聞
+      selectedNews: 'domestic',
+      wordCloudImages: {
+        domestic: require('@/assets/domestic-output.png'), // Ensure these paths are correct
+        international: require('@/assets/international-output.png')
+      }
     };
+  },
+  computed: {
+    wordCloudImage() {
+      console.log('Selected News:', this.selectedNews); // Debugging log
+      console.log('Word Cloud Image:', this.wordCloudImages[this.selectedNews]); // Debugging log
+      return this.wordCloudImages[this.selectedNews] || require('@/assets/fallback.jpg');
+    }
   },
   methods: {
     showNews(type) {
-      this.selectedNews = type; // 設置要顯示的新聞類型
+      this.selectedNews = type;
+    },
+    handleImageError(event) {
+      event.target.src = require('@/assets/fallback.jpg'); // Fallback image path
     }
   }
 }
 </script>
+
 
 <style>
 .news-and-cloud {
   display: flex;
   justify-content: space-between;
   padding: 20px;
-  margin: 20px
+  margin: 20px;
 }
 
 .news-section {
   flex: 3;
-  /* 新聞區域佔3個單位 */
   margin-right: 20px;
 }
 
 .news-buttons {
   display: flex;
   justify-content: flex-start;
-  /* 左對齊按鈕 */
   margin-bottom: 15px;
 }
 
@@ -154,7 +173,7 @@ export default {
   margin-right: 10px;
   padding: 8px 12px;
   border: none;
-  background-color: #bed6f1;
+  background-color: #54546c;
   color: #fff;
   border-radius: 5px;
   cursor: pointer;
@@ -162,32 +181,34 @@ export default {
 }
 
 .news-buttons button.active {
-  background-color: #76aee9;
+  background-color: #8283a7;
 }
 
 .news-buttons button:hover {
-  background-color: #76aee9;
+  background-color: #8283a7;
 }
 
 .word-cloud-container {
   flex: 1;
-  /* 文字雲部分佔1個單位 */
-  display: flex;
-  /* align-items: center; */
-  /* 移除此行 */
   align-self: flex-start;
-  /* 新添加的行 */
   margin-top: 20px;
 }
 
 .word-cloud {
   margin-top: 120px;
-  width: 300px;
-  /* 方框寬度 */
+  width: 400px; /* Increased width */
   border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 80px;
+  padding: 20px; /* Reduced padding */
   text-align: center;
+}
+
+.cloud-placeholder img {
+  max-width: 100%;
+  width: 100%; /* Make the image fill the container */
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .news-card {
@@ -212,10 +233,6 @@ export default {
 
 .news-card span.neutral {
   color: blue;
-}
-
-.cloud-placeholder {
-  color: gray;
 }
 
 .newstit {
