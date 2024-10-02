@@ -83,11 +83,59 @@ def create_stock_prediction(ticker, days=90):
     today = pd.to_datetime(datetime.now().date())
     predictions_next_30_days = model_data[model_data['ds'] >= today].head(30)
 
-    return predictions_next_30_days[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].to_dict(orient='records')
+    return predictions_next_30_days[['ds', 'yhat', 'yhat_lower', 'yhat_upper']]
+
+
+def filter_non_trading_days(predictions):
+    # Convert prediction dates to pandas datetime
+    predictions['ds'] = pd.to_datetime(predictions['ds'])
+
+    # Filter out weekends
+    trading_days = predictions[predictions['ds'].dt.weekday < 5]
+
+    # Additional custom market holidays (example list)
+    holidays = pd.to_datetime([
+        '2024-10-05',  
+        '2024-10-06',  
+        '2024-10-10',  
+        '2024-10-12',  
+        '2024-10-13',  
+        '2024-10-19',  
+        '2024-10-20',  
+        '2024-10-26',  
+        '2024-10-27',  
+        '2024-11-02',  
+        '2024-11-03',  
+        '2024-11-09',  
+        '2024-11-10',  
+        '2024-11-16',  
+        '2024-11-17',  
+        '2024-11-23',  
+        '2024-11-24',  
+        '2024-11-30',  
+        '2024-12-01',  
+        '2024-12-07',  
+        '2024-12-08',  
+        '2024-12-14',  
+        '2024-12-15',  
+        '2024-12-21',  
+        '2024-12-22',  
+        '2024-12-28',  
+        '2024-12-29',  
+        
+    ])
+
+    # Exclude custom holidays
+    trading_days = trading_days[~trading_days['ds'].isin(holidays)]
+
+    return trading_days
+
+
+
 
 # Function to calculate VaR
+
 def calculate_var(returns, confidence_level=0.95):
-    """Calculate the Value at Risk (VaR) using historical simulation method."""
     if len(returns) == 0:
         return None
     sorted_returns = sorted(returns)
@@ -107,8 +155,16 @@ def predict_stock():
 
     days = int(request.args.get('days', 90))
     try:
-        prediction = create_stock_prediction(ticker, days)
-        return jsonify(prediction)
+        # Create stock predictions as a DataFrame
+        predictions_df = create_stock_prediction(ticker, days)
+        
+        # Filter out non-trading days
+        filtered_predictions = filter_non_trading_days(predictions_df)
+        
+        # Convert to dictionary format for JSON response
+        filtered_predictions_dict = filtered_predictions[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].to_dict(orient='records')
+        
+        return jsonify(filtered_predictions_dict)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -258,4 +314,4 @@ def calculate_portfolio():
     })
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
