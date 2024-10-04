@@ -176,11 +176,22 @@ def current_price():
         return jsonify({'error': 'Stock not found in the provided list.'}), 400
 
     try:
+        # 嘗試獲取當前的股價
         df = yf.Ticker(ticker).history(period="1d")
+        if df.empty:
+            # 如果沒有找到當天數據，嘗試獲取過去5天的數據並使用最後一個有效值
+            df = yf.Ticker(ticker).history(period="5d")
+        
+        # 檢查數據是否為空
+        if df.empty:
+            return jsonify({'error': f'No price data found for {ticker}. It may be delisted or not traded recently.'}), 404
+
         current_price = df['Close'].iloc[-1]
         return jsonify({'currentPrice': current_price})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
 
 @app.route('/predict-image', methods=['GET'])
 def predict_image():
@@ -237,50 +248,74 @@ def calculate_portfolio():
     results = {}
 
     for ticker in selected_tickers:
-        stock_data[ticker] = yf.download(ticker, start='2023-01-01', end='2024-09-21')
+        try: 
+            stock_data[ticker] = yf.download(ticker, start='2023-01-01', end='2024-09-21')
+            # 嘗試獲取即時股價
+            current_price_data = yf.Ticker(ticker).history(period='1d')
 
-        company_name = stock_list.get(ticker, ticker)
-        data = stock_data[ticker]
-        data['RSI'] = ta.rsi(data['Close'])
-        data['MA_50'] = ta.sma(data['Close'], length=50)
-        data['MA_200'] = ta.sma(data['Close'], length=200)
+            if current_price_data.empty:
+                # 如果當天的數據為空，獲取最近5天內的最後一個可用收盤價
+                current_price_data = yf.Ticker(ticker).history(period='5d')
 
-        macd = ta.macd(data['Close'])
-        data['MACD'] = macd['MACD_12_26_9']
-        data['MACD_signal'] = macd['MACDs_12_26_9']
-        data['MACD_hist'] = macd['MACDh_12_26_9']
+            # 再次檢查數據是否可用
+            if not current_price_data.empty:
+                current_price = current_price_data['Close'].iloc[-1]
+            else:
+                current_price = None  # 或者設置為某個默認值，如 0
+            
+            company_name = stock_list.get(ticker, ticker)
+            data = stock_data[ticker]
+            data['RSI'] = ta.rsi(data['Close'])
+            data['MA_50'] = ta.sma(data['Close'], length=50)
+            data['MA_200'] = ta.sma(data['Close'], length=200)
 
-        stochastic = ta.stoch(data['High'], data['Low'], data['Close'])
-        data['Stochastic_K'] = stochastic['STOCHk_14_3_3']
-        data['Stochastic_D'] = stochastic['STOCHd_14_3_3']
+            macd = ta.macd(data['Close'])
+            data['MACD'] = macd['MACD_12_26_9']
+            data['MACD_signal'] = macd['MACDs_12_26_9']
+            data['MACD_hist'] = macd['MACDh_12_26_9']
 
-        current_price_data = yf.Ticker(ticker).history(period='1d')
-        current_price = current_price_data['Close'].iloc[-1]
+            stochastic = ta.stoch(data['High'], data['Low'], data['Close'])
+            data['Stochastic_K'] = stochastic['STOCHk_14_3_3']
+            data['Stochastic_D'] = stochastic['STOCHd_14_3_3']
 
-        ticker_info = yf.Ticker(ticker).info
-        financials = {
-            'market_cap': ticker_info.get('marketCap'),
-            'price_to_earnings': ticker_info.get('trailingPE'),
-            'revenue': ticker_info.get('totalRevenue'),
-            'gross_profit': ticker_info.get('grossProfits', "無數據"),
-            'debt_to_equity': ticker_info.get('debtToEquity')
-        }
+            ticker_info = yf.Ticker(ticker).info
+            financials = {
+                'market_cap': ticker_info.get('marketCap'),
+                'price_to_earnings': ticker_info.get('trailingPE'),
+                'revenue': ticker_info.get('totalRevenue'),
+                'gross_profit': ticker_info.get('grossProfits', "無數據"),
+                'debt_to_equity': ticker_info.get('debtToEquity')
+            }
+        except Exception as e:
+            # 處理其他可能的錯誤
+            print(f"Error fetching data for {ticker}: {e}")
+            current_price = None  # 或者設置為某個默認值，如 0
+            
+            # 在此處設置一個默認的 financials 值
+            financials = {
+                'market_cap': "無數據",
+                'price_to_earnings': "無數據",
+                'revenue': "無數據",
+                'gross_profit': "無數據",
+                'debt_to_equity': "無數據"
+            }
 
         results[ticker] = {
             'company_name': company_name,
             'current_price': current_price,
             'technical_analysis': {
-                'RSI': data['RSI'].iloc[-1],
-                'MA_50': data['MA_50'].iloc[-1],
-                'MA_200': data['MA_200'].iloc[-1],
-                'MACD': data['MACD'].iloc[-1],
-                'MACD_signal': data['MACD_signal'].iloc[-1],
-                'MACD_hist': data['MACD_hist'].iloc[-1],
-                'Stochastic_K': data['Stochastic_K'].iloc[-1],
-                'Stochastic_D': data['Stochastic_D'].iloc[-1]
+                'RSI': data['RSI'].iloc[-1] if not data['RSI'].empty else "無數據",
+                'MA_50': data['MA_50'].iloc[-1] if not data['MA_50'].empty else "無數據",
+                'MA_200': data['MA_200'].iloc[-1] if not data['MA_200'].empty else "無數據",
+                'MACD': data['MACD'].iloc[-1] if not data['MACD'].empty else "無數據",
+                'MACD_signal': data['MACD_signal'].iloc[-1] if not data['MACD_signal'].empty else "無數據",
+                'MACD_hist': data['MACD_hist'].iloc[-1] if not data['MACD_hist'].empty else "無數據",
+                'Stochastic_K': data['Stochastic_K'].iloc[-1] if not data['Stochastic_K'].empty else "無數據",
+                'Stochastic_D': data['Stochastic_D'].iloc[-1] if not data['Stochastic_D'].empty else "無數據"
             },
             'financials': financials
         }
+        
     
     returns = pd.concat([stock_data[ticker]['Adj Close'].pct_change() for ticker in selected_tickers], axis=1)
     returns.columns = selected_tickers
