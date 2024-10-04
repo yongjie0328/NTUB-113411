@@ -4,16 +4,17 @@
     <nav class="navbar">
       <div class="nav-left">
         <router-link to="/home" class="nav-link-home-link" :class="{ 'active-link': isActive('/home') }">
-          <img class="img" src="../assets/圖片1.jpg" alt="logo" />
+          <img class="img" src="../assets/logo1.jpg" alt="logo" />
         </router-link>
-        <router-link to="/stock" class="nav-link" :class="{ 'active-link': isActive('/stock') }">個股資訊</router-link>
+        
         <router-link to="/teaching" class="nav-link" :class="{ 'active-link': isActive('/teaching') }">教學小學堂</router-link>
-        <router-link to="/risk" class="nav-link" :class="{ 'active-link': isActive('/risk') }">風險評估</router-link>
+        <router-link to="/risk" class="nav-link" :class="{ 'active-link': isActive('/risk') }">AI預測股價</router-link>
         <router-link to="/news" class="nav-link" :class="{ 'active-link': isActive('/news') }">新聞</router-link>
-        <router-link to="/discussion" class="nav-link" :class="{ 'active-link': isActive('/discussion') }">討論區</router-link>
+        <router-link to="/PortfolioCalculator" class="nav-link" :class="{ 'active-link': isActive('/PortfolioCalculator') }">投資組合計算器</router-link>
+        <router-link to="/StockTracker" class="nav-link" :class="{ 'active-link': isActive('/StockTracker') }">股票價格追蹤</router-link>
       </div>
       <div class="nav-right">
-        <input type="text" placeholder="搜尋..." class="search-input" v-model="searchQuery" @input="searchContent">
+        <!-- 收藏股票下拉列表 -->
         <div class="dropdown" @click="toggleDropdown">
           <span class="nav-link">收藏股票</span>
           <span :class="{'dropdown-arrow': true, 'open': dropdownOpen}"></span>
@@ -45,12 +46,7 @@ export default {
       dropdownOpen: false,
       searchQuery: '',
       searchResults: [],
-      favoriteStocks: [
-        { id: '2330', name: '2330台積電' },
-        { id: '2882', name: '2882國泰金' },
-        { id: '2618', name: '2618長榮海運' },
-        // 添加更多股票
-      ]
+      favoriteStocks: this.getFavoriteStocks(), // 从 localStorage 获取收藏的股票
     };
   },
   methods: {
@@ -67,7 +63,6 @@ export default {
       }
 
       const query = this.searchQuery.toLowerCase();
-      // 模拟搜索内容，这里可以根据实际需要调整逻辑
       const content = [
         '個股資訊',
         '教學小學堂',
@@ -79,10 +74,29 @@ export default {
       ];
 
       this.searchResults = content.filter(item => item.toLowerCase().includes(query));
-    }
+    },
+    getFavoriteStocks() {
+      // 从 localStorage 获取收藏的股票列表
+      let storedStocks = JSON.parse(localStorage.getItem('favoriteStocks')) || [];
+      // 映射为包含 id 和 name 的对象，以便在下拉列表中显示
+      return storedStocks.map(stockCode => ({ id: stockCode, name: `${stockCode} ` }));
+    },
+  },
+  watch: {
+  // 监听路由变化
+  '$route'() {
+    this.favoriteStocks = this.getFavoriteStocks(); // 每次路由变化时更新收藏列表
   }
-}
+},
+  mounted() {
+    // 监听页面加载时更新收藏列表
+    window.addEventListener('storage', () => {
+      this.favoriteStocks = this.getFavoriteStocks();
+    });
+  },
+};
 </script>
+
 
 <style>
 .container {
@@ -108,6 +122,7 @@ export default {
   z-index: 1000; /* 确保导航栏在其他内容上方 */
   box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 可选：添加阴影 */
   padding: 10px 10px; /* 内边距 */
+  font-size: 20px;
 }
 
 .nav-left, .nav-right {

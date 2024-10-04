@@ -1,27 +1,19 @@
 <template>
   <div class="container">
     <h1 class="title">股票預測結果</h1>
-
-    <!-- 股票選擇器和輸入框 -->
     <div class="input-group">
-      <select v-model="selectedTicker" class="ticker-select">
+      <select v-model="selectedTicker" class="ticker-select" @change="clearPreviousData">
         <option value="">選擇股票</option>
         <option v-for="(name, code) in stockList" :key="code" :value="code">
           {{ name }} ({{ code }})
         </option>
       </select>
-
-      <input v-model="customTicker" class="ticker-input" placeholder="或手動輸入股票代碼" />
-
+      <input v-model="customTicker" class="ticker-input" placeholder="或手動輸入股票代碼" @input="clearPreviousData">
       <button @click="getPrediction" class="predict-button">獲取預測</button>
     </div>
-
-    <!-- 當前股價顯示 -->
     <div v-if="currentPrice" class="current-price">
-      <h2>目前股價: ${{ currentPrice.toFixed(2) }} </h2>
+      <h2>目前股價: ${{ currentPrice.toFixed(2) }}</h2>
     </div>
-
-    <!-- 預測表格 -->
     <table v-if="predictions.length > 0" class="prediction-table">
       <thead>
         <tr>
@@ -40,8 +32,6 @@
         </tr>
       </tbody>
     </table>
-
-    <!-- 股票預測圖片 -->
     <div v-if="imageUrl" class="chart-container">
       <h2>股票預測圖像</h2>
       <img :src="imageUrl" alt="Stock Prediction Chart" class="prediction-image" />
@@ -51,17 +41,16 @@
 
 <script>
 export default {
-  name: 'riskForm',
+  name: 'StockPredictionForm',
   data() {
     return {
-      selectedTicker: '', // 透過下拉選單選擇的股票代碼
-      customTicker: '',   // 透過輸入框輸入的股票代碼
+      selectedTicker: '',
+      customTicker: '',
       currentPrice: null,
       predictions: [],
       imageUrl: '',
-      // 股票清單
       stockList: {
-        '2888.TW': '新光金控',
+         '2888.TW': '新光金控',
         '2891.TW': '中信金控',
         '2883.TW': '開發金控',
         '2882.TW': '國泰金控',
@@ -114,48 +103,47 @@ export default {
       }
     };
   },
-  watch: {
-    customTicker(value) {
-      // 清空下拉選單選擇
-      if (value) {
-        this.selectedTicker = '';
-      }
-    },
-    selectedTicker(value) {
-      // 清空手動輸入框
-      if (value) {
-        this.customTicker = '';
-      }
-    }
-  },
   methods: {
-    async getPrediction() {
-      // 優先使用下拉選單選擇的股票代碼，否則使用手動輸入的股票代碼
-      const ticker = this.selectedTicker || this.customTicker;
-
-      if (!ticker) {
-        alert('請選擇股票或輸入股票代碼');
-        return;
-      }
-
-      try {
-        // 獲取目前股價
-        const priceResponse = await fetch(`http://127.0.0.1:5000/current-price?ticker=${ticker}`);
-        const priceData = await priceResponse.json();
-        this.currentPrice = priceData.currentPrice;
-
-        // 獲取預測數據
-        const predictionResponse = await fetch(`http://127.0.0.1:5000/predict?ticker=${ticker}&days=90`);
-        this.predictions = await predictionResponse.json();
-
-        // 獲取預測圖像
-        const imageResponse = await fetch(`http://127.0.0.1:5000/predict-image?ticker=${ticker}&days=90`);
-        const imageBlob = await imageResponse.blob();
-        this.imageUrl = URL.createObjectURL(imageBlob);
-      } catch (error) {
-        console.error('Error fetching prediction or image:', error);
-      }
+    clearPreviousData() {
+      this.currentPrice = null;
+      this.predictions = [];
+      this.imageUrl = '';
     },
+    async getPrediction() {
+  const ticker = this.selectedTicker || this.customTicker;
+  if (!ticker) {
+    alert('請選擇股票或輸入股票代碼');
+    return;
+  }
+
+  try {
+    const responses = await Promise.all([
+      fetch(`http://127.0.0.1:5000/current-price?ticker=${ticker}`),
+      fetch(`http://127.0.0.1:5000/predict?ticker=${ticker}&days=90`),
+      fetch(`http://127.0.0.1:5000/predict-image?ticker=${ticker}&days=90`)
+    ]);
+
+    // 使用 JSON 方法處理前兩個響應，使用 blob 方法處理圖片響應
+    const [priceResponse, predictionResponse, imageResponse] = responses;
+
+    if (!priceResponse.ok || !predictionResponse.ok || !imageResponse.ok) {
+      throw new Error('Network response was not ok.');
+    }
+
+    const priceData = await priceResponse.json();
+    const predictions = await predictionResponse.json();
+    const imageBlob = await imageResponse.blob();
+
+    this.currentPrice = priceData.currentPrice;
+    this.predictions = predictions;
+    this.imageUrl = URL.createObjectURL(imageBlob);
+
+  } catch (error) {
+    console.error('Error fetching prediction or image:', error);
+    alert(`錯誤: ${error.message}`);
+  }
+},
+
     formatDate(dateStr) {
       const date = new Date(dateStr);
       return `${date.getFullYear() - 1911}/${date.getMonth() + 1}/${date.getDate()}`;
@@ -166,13 +154,14 @@ export default {
 
 <style scoped>
 .container {
-  max-width: 800px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   margin-top: 20px;
+  font-size: 24px;
 }
 
 .title {
@@ -185,6 +174,7 @@ export default {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
+
 }
 
 .ticker-select, .ticker-input {
@@ -199,14 +189,14 @@ export default {
   padding: 10px 20px;
   border: none;
   border-radius: 4px;
-  background-color: #007bff;
+  background-color: #54546c;
   color: white;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .predict-button:hover {
-  background-color: #0056b3;
+  background-color: #858599;
 }
 
 .current-price {
@@ -214,6 +204,7 @@ export default {
   font-size: 1.5em;
   margin: 20px 0;
   color: #333;
+  font-size: 20px;
 }
 
 .prediction-image {
