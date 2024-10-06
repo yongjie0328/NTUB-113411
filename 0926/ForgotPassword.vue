@@ -1,20 +1,22 @@
 <template>
+  <div class="center-wrapper">
     <div class="forgot-password-container">
       <h1>找回密碼</h1>
-      <form @submit.prevent="submitEmail">
-        <input type="email" v-model="email" placeholder="請輸入你的電子郵件" required>
-        <button type="submit">提交</button>
-      </form>
-    
+        <form @submit.prevent="submitEmail">
+          <input type="email" v-model="email" placeholder="請輸入你的電子郵件" required>
+          <button type="submit">提交</button>
+        </form>
+      
       <h1>輸入驗證碼</h1>
-      <form @submit.prevent="submittext">
-        <input type="text" v-model="email" placeholder="請輸入你的驗證碼" required>
-        <button type="submit">提交</button>
-      </form>
+        <form @submit.prevent="submittext">
+          <input type="text" v-model="email" placeholder="請輸入你的驗證碼" required>
+          <button type="submit">提交</button>
+        </form>
     </div>
-  </template>
+  </div>
+</template>
   
-  <script>
+<script>
   export default {
     data() {
       return {
@@ -28,28 +30,12 @@
       }
     }
   }
-  </script>
+</script>
   
-
 <style scoped>
-  body {
+.center-wrapper {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0; /* 移除邊距 */
-  }
-
-.forgot-password-container {
-  max-width: 400px; /* 設置容器的最大寬度 */
-  padding: 20px;
-  border: 1px solid #7C7877;
-  border-radius: 8px;
-  background-color: #D9D4CF;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column; /* 垂直排列內容 */
-  align-items: center;
+  justify-content: center; /* 水平置中 */
 }
 
 .forgot-password-container {
@@ -59,9 +45,9 @@
   border-radius: 8px;
   background-color: #D9D4CF;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
+  flex-direction: column; /* 垂直排列內容 */
   align-items: center;
+  text-align: center;
 }
 
 h1 {
@@ -103,3 +89,4 @@ button:hover {
   background-color: #605e5d;
 }
 </style>
+  

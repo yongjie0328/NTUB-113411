@@ -1,8 +1,6 @@
 <template>
   <div class="news-and-cloud">
-
     <div class="news-section">
-      <h1>新聞區</h1>
       <!-- 添加兩個按鈕 -->
       <div class="news-buttons">
         <button :class="{ 'active': selectedNews === 'domestic' }" @click="showNews('domestic')">國內新聞</button>
@@ -118,12 +116,14 @@ export default {
   name: 'NewsAndCloud',
   data() {
     return {
-      selectedNews: 'domestic', // 初始顯示國內新聞
+      selectedNews: 'domestic',
+      domesticNews: [], // Add your data here
+      internationalNews: [] // Add your data here
     };
   },
   methods: {
     showNews(type) {
-      this.selectedNews = type; // 設置要顯示的新聞類型
+      this.selectedNews = type;
     }
   }
 }
@@ -134,19 +134,19 @@ export default {
   display: flex;
   justify-content: space-between;
   padding: 20px;
-  margin: 20px
+  background-color: #4C4C4C; /* Industrial-style dark background */
+  margin-top: 40px; /* 與頁面上方的距離 */
 }
 
 .news-section {
   flex: 3;
-  /* 新聞區域佔3個單位 */
   margin-right: 20px;
+  color: #dcdcdc; /* Light gray text for contrast */
 }
 
 .news-buttons {
   display: flex;
   justify-content: flex-start;
-  /* 左對齊按鈕 */
   margin-bottom: 15px;
 }
 
@@ -154,73 +154,78 @@ export default {
   margin-right: 10px;
   padding: 8px 12px;
   border: none;
-  background-color: #54546c;
-  color: #fff;
+  background-color: #3a3a3a; /* Dark gray button */
+  color: #dcdcdc;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .news-buttons button.active {
-  background-color: #8283a7;
+  background-color: #606060; /* Highlight active button */
 }
 
 .news-buttons button:hover {
-  background-color: #8283a7;
+  background-color: #505050;
 }
 
 .word-cloud-container {
   flex: 1;
-  /* 文字雲部分佔1個單位 */
-  display: flex;
-  /* align-items: center; */
-  /* 移除此行 */
-  align-self: flex-start;
-  /* 新添加的行 */
   margin-top: 20px;
 }
 
 .word-cloud {
-  margin-top: 120px;
+  margin-top: 35px;
   width: 300px;
-  /* 方框寬度 */
-  border: 1px solid #ddd;
+  border: 1px solid #404040; /* Dark gray border */
   border-radius: 8px;
   padding: 80px;
+  background-color: #1c1c1c; /* Slightly lighter background for contrast */
   text-align: center;
+  color: #dcdcdc;
 }
 
 .news-card {
-  border: 1px solid #ddd;
-  padding: 10px;
+  background-color: #1c1c1c; /* Dark background for news cards */
+  border: 1px solid #404040;
+  padding: 15px;
   margin-bottom: 15px;
   border-radius: 8px;
+  transition: transform 0.3s ease; /* 加入過渡效果 */
+}
+
+.news-card:hover {
+  transform: scale(1.05); /* 放大卡片 */
 }
 
 .news-card h3 {
   margin: 0;
   font-size: 1.5em;
+  color: #dcdcdc;
 }
 
 .news-card span.positive {
-  color: green;
+  color: #8fbc8f; /* Soft green for positive sentiment */
 }
 
 .news-card span.negative {
-  color: red;
+  color: #bc8f8f; /* Soft red for negative sentiment */
 }
 
 .news-card span.neutral {
-  color: blue;
-}
-
-.cloud-placeholder {
-  color: gray;
+  color: #4682b4; /* Blue for neutral sentiment */
 }
 
 .newstit {
-  color: black;
+  color: #dcdcdc;
   text-decoration: none;
 }
 
+.newstit:hover {
+  text-decoration: underline;
+}
+
+.cloud-placeholder {
+  color: #a9a9a9; /* Dim gray for placeholder text */
+}
 </style>

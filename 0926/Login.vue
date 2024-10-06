@@ -1,7 +1,7 @@
 <template>
   <div class="login">
-    <div class="header">
-      <img class="img" src="..\assets\S__3579960_0-removebg-preview.png" alt="logo" />
+    <div class="header-login">
+      <img src="@/assets/S__3579960_0-removebg-preview.png" alt="金融資訊網站標誌" class="logo" />
     </div>
     <h2>登入</h2>
     <form @submit.prevent="login" id="loginForm" class="input-container">
@@ -80,7 +80,7 @@ body {
 }
 
 /* 標題部分樣式 */
-.header {
+.header-login {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -129,13 +129,16 @@ input[type="password"] {
 
 /* 按鈕樣式 */
 .button {
-  padding: 10px 20px;
-  font-size: 16px;
   background-color: #77AAAD; /* 使用指定顏色 */
-  color: #fff;
   border: none;
-  border-radius: 5px;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 5px 5px;
   cursor: pointer;
+  border-radius: 5px;
 }
 
 /* 按鈕懸停效果 */
@@ -155,6 +158,10 @@ input[type="password"] {
   margin: 5px 5px;
   cursor: pointer;
   border-radius: 5px;
+}
+
+.btn:hover {
+  background-color: #7C7877; /* 滑過按鈕時改變顏色 */
 }
 
 /* 忘記密碼連結 */
