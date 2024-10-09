@@ -485,7 +485,7 @@
   }
   
   header {
-    background-color: #57614e;
+    background-color: #182027;
     color: #fff;
     padding: 1em 0;
   }
@@ -531,7 +531,7 @@
   h3 {
     font-size: 32px;
     margin: 1em 0;
-    color:#54546c
+    color:#2c3e50
   }
 
   h4 {

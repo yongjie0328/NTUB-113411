@@ -130,102 +130,102 @@ export default {
 </script>
 
 <style>
-.news-and-cloud {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
-  background-color: #4C4C4C; /* Industrial-style dark background */
-  margin-top: 40px; /* 與頁面上方的距離 */
-}
+  .news-and-cloud {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #F5F5F5; /* 淺灰色背景 */
+    margin-top: 40px; 
+  }
 
-.news-section {
-  flex: 3;
-  margin-right: 20px;
-  color: #dcdcdc; /* Light gray text for contrast */
-}
+  .news-section {
+    flex: 3;
+    margin-right: 20px;
+    color: #333; /* 深灰色文字 */
+  }
 
-.news-buttons {
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 15px;
-}
+  .news-buttons {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 15px;
+  }
 
-.news-buttons button {
-  margin-right: 10px;
-  padding: 8px 12px;
-  border: none;
-  background-color: #3a3a3a; /* Dark gray button */
-  color: #dcdcdc;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
+  .news-buttons button {
+    margin-right: 10px;
+    padding: 8px 12px;
+    border: none;
+    background-color: #D3D3D3; /* 淺灰色按鈕背景 */
+    color: #333; /* 深灰色文字 */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
 
-.news-buttons button.active {
-  background-color: #606060; /* Highlight active button */
-}
+  .news-buttons button.active {
+    background-color: #B0B0B0; /* 稍深的灰色來標示活動按鈕 */
+  }
 
-.news-buttons button:hover {
-  background-color: #505050;
-}
+  .news-buttons button:hover {
+    background-color: #A9A9A9; /* 按鈕懸停效果 */
+  }
 
-.word-cloud-container {
-  flex: 1;
-  margin-top: 20px;
-}
+  .word-cloud-container {
+    flex: 1;
+    margin-top: 20px;
+  }
 
-.word-cloud {
-  margin-top: 35px;
-  width: 300px;
-  border: 1px solid #404040; /* Dark gray border */
-  border-radius: 8px;
-  padding: 80px;
-  background-color: #1c1c1c; /* Slightly lighter background for contrast */
-  text-align: center;
-  color: #dcdcdc;
-}
+  .word-cloud {
+    margin-top: 35px;
+    width: 300px;
+    border: 1px solid #E0E0E0; /* 淺灰色邊框 */
+    border-radius: 8px;
+    padding: 80px;
+    background-color: #FFFFFF; /* 白色背景 */
+    text-align: center;
+    color: #333; /* 深灰色文字 */
+  }
 
-.news-card {
-  background-color: #1c1c1c; /* Dark background for news cards */
-  border: 1px solid #404040;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  transition: transform 0.3s ease; /* 加入過渡效果 */
-}
+  .news-card {
+    background-color: #FFFFFF; /* 白色新聞卡片背景 */
+    border: 1px solid #E0E0E0; /* 淺灰色邊框 */
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    transition: transform 0.3s ease; 
+  }
 
-.news-card:hover {
-  transform: scale(1.05); /* 放大卡片 */
-}
+  .news-card:hover {
+    transform: scale(1.05); /* 放大卡片 */
+  }
 
-.news-card h3 {
-  margin: 0;
-  font-size: 1.5em;
-  color: #dcdcdc;
-}
+  .news-card h3 {
+    margin: 0;
+    font-size: 1.5em;
+    color: #333; /* 深灰色標題 */
+  }
 
-.news-card span.positive {
-  color: #8fbc8f; /* Soft green for positive sentiment */
-}
+  .news-card span.positive {
+    color: #4CAF50; /* 綠色表示正面情緒 */
+  }
 
-.news-card span.negative {
-  color: #bc8f8f; /* Soft red for negative sentiment */
-}
+  .news-card span.negative {
+    color: #F44336; /* 紅色表示負面情緒 */
+  }
 
-.news-card span.neutral {
-  color: #4682b4; /* Blue for neutral sentiment */
-}
+  .news-card span.neutral {
+    color: #FF9800; /* 橙色表示中立情緒 */
+  }
 
-.newstit {
-  color: #dcdcdc;
-  text-decoration: none;
-}
+  .newstit {
+    color: #333; /* 深灰色文字 */
+    text-decoration: none;
+  }
 
-.newstit:hover {
-  text-decoration: underline;
-}
+  .newstit:hover {
+    text-decoration: underline;
+  }
 
-.cloud-placeholder {
-  color: #a9a9a9; /* Dim gray for placeholder text */
-}
+  .cloud-placeholder {
+    color: #A9A9A9; /* 暗灰色作為佔位文字 */
+  }
 </style>
