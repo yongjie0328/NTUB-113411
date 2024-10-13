@@ -112,31 +112,31 @@
             <h4>技術分析</h4>
             <table>
               <tr>
-                <td><strong>RSI:</strong></td>
+                <td><strong>RSI</strong></td>
                 <td>{{ formatNumber(analysis.technical_analysis.RSI) }}</td>
               </tr>
               <tr>
-                <td><strong>MA 50:</strong></td>
+                <td><strong>MA 50</strong></td>
                 <td>{{ formatNumber(analysis.technical_analysis.MA_50) }}</td>
               </tr>
               <tr>
-                <td><strong>MA 200:</strong></td>
+                <td><strong>MA 200</strong></td>
                 <td>{{ formatNumber(analysis.technical_analysis.MA_200) }}</td>
               </tr>
               <tr>
-                <td><strong>MACD:</strong></td>
+                <td><strong>MACD</strong></td>
                 <td>{{ formatNumber(analysis.technical_analysis.MACD) }}</td>
               </tr>
               <tr>
-                <td><strong>MACD Signal:</strong></td>
+                <td><strong>MACD Signal</strong></td>
                 <td>{{ formatNumber(analysis.technical_analysis.MACD_signal) }}</td>
               </tr>
               <tr>
-                <td><strong>Stochastic K:</strong></td>
+                <td><strong>Stochastic K</strong></td>
                 <td>{{ formatNumber(analysis.technical_analysis.Stochastic_K) }}</td>
               </tr>
               <tr>
-                <td><strong>Stochastic D:</strong></td>
+                <td><strong>Stochastic D</strong></td>
                 <td>{{ formatNumber(analysis.technical_analysis.Stochastic_D) }}</td>
               </tr>
             </table>
@@ -144,23 +144,23 @@
             <h4>財務數據</h4>
             <table>
               <tr>
-                <td><strong>市值:</strong></td>
+                <td><strong>市值</strong></td>
                 <td>{{ formatNumber(analysis.financials.market_cap) }}</td>
               </tr>
               <tr>
-                <td><strong>本益比:</strong></td>
+                <td><strong>本益比</strong></td>
                 <td>{{ formatNumber(analysis.financials.price_to_earnings) }}</td>
               </tr>
               <tr>
-                <td><strong>營收:</strong></td>
+                <td><strong>營收</strong></td>
                 <td>{{ formatNumber(analysis.financials.revenue) }}</td>
               </tr>
               <tr>
-                <td><strong>毛利:</strong></td>
+                <td><strong>毛利</strong></td>
                 <td>{{ formatNumber(analysis.financials.gross_profit) }}</td>
               </tr>
               <tr>
-                <td><strong>負債比:</strong></td>
+                <td><strong>負債比</strong></td>
                 <td>{{ formatNumber(analysis.financials.debt_to_equity) }}</td>
               </tr>
             </table>
@@ -299,7 +299,7 @@ export default {
       };
 
       try {
-        const response = await fetch('http://127.0.0.1:5000/calculate_portfolio', {
+        const response = await fetch('http://140.131.114.169:5000/calculate_portfolio', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -458,6 +458,7 @@ export default {
   table td {
     padding: 10px;
     border: 1px solid #ddd;
+    width: 300px;
   }
 
   td:first-child {
