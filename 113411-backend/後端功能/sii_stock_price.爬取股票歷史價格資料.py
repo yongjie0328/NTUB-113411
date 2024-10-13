@@ -25,7 +25,7 @@ def get_tw_stock_data(stock_code, start_date, end_date, freq='M'):
                 df = pd.concat([df, stock_df], ignore_index=True)
         else:
             print(f"找不到股票代碼 {stock_code} 在 {date} 的資料。")
-        time.sleep(random.uniform(2, 5))  # 可根据实际情况减少或移除
+        time.sleep(random.uniform(2, 5))  
 
     return df
 

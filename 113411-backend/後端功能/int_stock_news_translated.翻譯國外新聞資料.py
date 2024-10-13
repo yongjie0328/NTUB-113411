@@ -4,7 +4,7 @@ import time
 import re
 
 # 讀取 CSV 文件
-file_path = r'C:\Users\yingh\Desktop\python爬蟲\stock_news\int_stock_news.csv'  # 請替換為你的文件路徑
+file_path = r'C:\Users\yingh\Desktop\python爬蟲\stock_news\int_stock_news.csv'  
 df = pd.read_csv(file_path)
 
 # 創建翻譯器

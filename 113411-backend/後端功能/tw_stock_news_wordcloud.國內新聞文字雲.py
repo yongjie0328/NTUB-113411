@@ -16,7 +16,7 @@ text = ' '.join(text_data)
 wordlist = jieba.cut(text, cut_all=False)
 word_space_split = " ".join(wordlist)
 
-# 停用词列表，包含"的"等不需要出现在文字雲中的詞
+# 停用詞列表，包含"的"等不需要出現在文字雲中的詞
 stopwords = set(['的', '是', '在', '和', '也', '為', '有', '於', '與', '及', '而', '或', '以', '都', '等', '了'])
 
 # 移除停用詞
