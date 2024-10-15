@@ -1,7 +1,7 @@
 <template>
   <div class="chat-form">
     <div class="logo-container" @click="toggleChat">
-      <img src="../assets/logo1.jpg" alt="Logo" class="logo" />
+      <img src="../assets/圖片1.jpg" alt="Logo" class="logo" />
     </div>
     <div class="chat-window" v-if="isChatOpen" @click.stop>
       <h2>問答機器人</h2>
@@ -20,7 +20,6 @@
 
 <script>
 import axios from 'axios';
-
 export default {
   name: 'ChatForm',
   data() {
@@ -34,22 +33,22 @@ export default {
     toggleChat() {
       this.isChatOpen = !this.isChatOpen; // 切换聊天窗口的开关状态
     },
-    async sendMessage() {
-      // 添加用户输入到消息列表
-      if (!this.userInput) return;
-      this.messages.push({ role: 'user', content: this.userInput });
+  async sendMessage() {
+    if (!this.userInput) return;
+    this.messages.push({ role: 'user', content: this.userInput });
 
-      try {
-        const response = await axios.post('http://127.0.0.1:5000/ask', {
-          question: this.userInput,
-        });
-        this.messages.push({ role: 'assistant', content: response.data.answer });
-      } catch (error) {
-        console.error('Error fetching response:', error);
-        this.messages.push({ role: 'assistant', content: '無法取得回答，請稍後再試。' });
-      }
-      this.userInput = '';
-    },
+    try {
+      // 使用 POST 方法來發送請求
+      const response = await axios.post('http://140.131.114.169:8081/ASK/question', {
+        question: this.userInput,
+      });
+      this.messages.push({ role: 'assistant', content: response.data.answer });
+    } catch (error) {
+      console.error('Error fetching response:', error);
+      this.messages.push({ role: 'assistant', content: '無法取得回答，請稍後再試。' });
+    }
+    this.userInput = '';
+  }
   },
 };
 </script>
@@ -94,6 +93,7 @@ export default {
   z-index: 1000; /* 确保聊天窗口在最上面 */
   display: flex;
   flex-direction: column; /* 让内容垂直排列 */
+  font-size: 20px;
 }
 
 .chat-box {
@@ -106,8 +106,8 @@ export default {
 }
 
 .message {
-  margin: 10px 0;
-  padding: 10px;
+  margin:2px 2px;
+  padding: 5px;
   border-radius: 5px;
 }
 

@@ -7,73 +7,72 @@
       <button class="nav-item" :class="{ 'active': selectedNavItem === 'historical-info' }"
         @click="showTSMInfo('historical-info')">歷史資料</button>
       <button class="nav-item" :class="{ 'active': selectedNavItem === 'technical-analysis' }"
-        @click="showTSMInfo('technical-analysis')">技術分析</button> 
+        @click="showTSMInfo('technical-analysis')">技術分析</button>
       <button class="nav-item" :class="{ 'active': selectedNavItem === 'financial-analysis' }"
         @click="showTSMInfo('financial-analysis')">財務分析</button>
-      <button class="nav-item" :class="{ 'active': selectedNavItem === 'trend-prediction' }"
+      <button class="nav-item" :class="{ 'active': selectedNavItem === 'financial-analysis' }"
         @click="showTSMInfo('trend-prediction')">AI預測走勢</button>
     </div>
 
     <div class="main right">
-        <div v-if="selectedNavItem === 'basic-info'">
-          <h2 v-if="company">{{ company.name }} 詳細信息</h2>
-          <div v-if="isLoading">加載中...</div>
-          <div v-else-if="company">
-            <table class="company-table">
-              <thead>
-                <tr>
-                  <th>公司名稱</th>
-                  <th>股票代碼</th>
-                  <th>產業類別</th>
-                  <th>公司簡稱</th>
-                  <th>地址</th>
-                  <th>董事長</th>
-                  <th>成立時間</th>
-                  <th>上市日期</th>
-                  <th>普通股每股面額</th>
-                  <th>實收資本額(元)</th>
-                  <th>已發行普通股數或TDR原發行股數</th>
-                  <th>編製財務報告類型</th>
-                  <th>普通股盈餘分派或虧損撥補頻率</th>
-                  <th>普通股年度(含第4季或後半年度)現金股息及紅利決議層級</th>
-                  <th>股票過戶機構</th>
-                  <th>簽證會計師事務所</th>
-                  <th>英文簡稱</th>
-                  <th>電子郵件信箱</th>
-                  <th>公司網址</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{{ company.name }}</td>
-                  <td>{{ company.stockCode }}</td>
-                  <td>{{ company.industry }}</td>
-                  <td>{{ company.shortName }}</td>
-                  <td>{{ company.address }}</td>
-                  <td>{{ company.chairman }}</td>
-                  <td>{{ company.foundedDate }}</td>
-                  <td>{{ company.listedDate }}</td>
-                  <td>{{ company.parValuePerShare }}</td>
-                  <td>{{ company.paidInCapital }}</td>
-                  <td>{{ company.totalSharesIssued }}</td>
-                  <td>{{ company.financialReportType }}</td>
-                  <td>{{ company.dividendFrequency }}</td>
-                  <td>{{ company.dividendResolutionLevel }}</td>
-                  <td>{{ company.transferAgency }}</td>
-                  <td>{{ company.auditFirm }}</td>
-                  <td>{{ company.englishShortName }}</td>
-                  <td>{{ company.email }}</td>
-                  <td>{{ company.website }}</td>
-                </tr>
-              </tbody>
-            </table>
-            <router-view />
-          </div>
-
-          <div v-else>
-            <p>未找到公司信息</p>
-          </div>
+      <div v-if="selectedNavItem === 'basic-info'">
+        <h2 v-if="company">{{ company.company_name }} 詳細信息</h2>
+        <div v-if="isLoading">加載中...</div>
+        <div v-else-if="company">
+          <table class="company-table">
+            <thead>
+              <tr>
+                <th>公司名稱</th>
+                <th>股票代碼</th>
+                <th>產業類別</th>
+                <th>公司簡稱</th>
+                <th>地址</th>
+                <th>董事長</th>
+                <th>成立時間</th>
+                <th>上市日期</th>
+                <th>普通股每股面額</th>
+                <th>實收資本額(元)</th>
+                <th>已發行普通股數或TDR原發行股數</th>
+                <th>編製財務報告類型</th>
+                <th>普通股盈餘分派或虧損撥補頻率</th>
+                <th>普通股年度(含第4季或後半年度)現金股息及紅利決議層級</th>
+                <th>股票過戶機構</th>
+                <th>簽證會計師事務所</th>
+                <th>英文簡稱</th>
+                <th>電子郵件信箱</th>
+                <th>公司網址</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ company.company_name }}</td>
+                <td>{{ company.stock_code }}</td>
+                <td>{{ company.industry }}</td>
+                <td>{{ company.short_name }}</td>
+                <td>{{ company.address }}</td>
+                <td>{{ company.chairman }}</td>
+                <td>{{ company.founded_date }}</td>
+                <td>{{ company.listed_date }}</td>
+                <td>{{ company.par_value_per_share }}</td>
+                <td>{{ company.paid_in_capital }}</td>
+                <td>{{ company.total_shares_issued }}</td>
+                <td>{{ company.financial_report_type }}</td>
+                <td>{{ company.dividend_frequency }}</td>
+                <td>{{ company.dividend_resolution_level }}</td>
+                <td>{{ company.transfer_agency }}</td>
+                <td>{{ company.audit_firm }}</td>
+                <td>{{ company.english_short_name }}</td>
+                <td>{{ company.email }}</td>
+                <td>{{ company.website }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+
+        <div v-else>
+          <p>未找到公司信息</p>
+        </div>
+      </div>
 
         <div v-else-if="selectedNavItem === 'historical-info'">
           <h2>歷史資料</h2>
@@ -148,8 +147,6 @@
         <div v-else-if="selectedNavItem === 'financial-analysis'">
           <div class="financial-analysis-container">
             <h2>財務分析</h2>
-           
-
             <div class="content-container">
               <div class="buttons-container">
                 <!-- Monthly Revenue Button -->
@@ -237,7 +234,6 @@
 import axios from 'axios';
 
 export default {
-  name: 'CompanyDetails',
   data() {
     return {
       isLoading: false,
@@ -258,26 +254,24 @@ export default {
   methods: {
     fetchData() {
       this.isLoading = true;
+      const stockCode = this.$route.params.stockCode || '1101'; // 从路由参数中获取 stockCode
       let url = '';
+
       switch (this.selectedNavItem) {
         case 'basic-info':
-          url = 'http://172.16.66.118:8000/STOCK/data?table_name=sii_stock_info';
+          url = `http://140.131.114.169:8001/STOCK/data_id_info?table_name=sii_stock_info&value=${stockCode}`;
           break;
         case 'historical-info':
-          // Set URL for historical info
-          url = 'http://172.16.66.118:8000/STOCK/data?table_name=historical_info';
+          url = 'http://140.131.114.169:8001/STOCK/data?table_name=historical_info';
           break;
         case 'technical-analysis':
-          // Set URL for technical analysis
-          url = 'http://172.16.66.118:8000/STOCK/data?table_name=technical_analysis';
+          url = 'http://140.131.114.169:8001/STOCK/data?table_name=technical_analysis';
           break;
         case 'financial-analysis':
-          // Set URL for financial analysis
-          url = 'http://172.16.66.118:8000/STOCK/data?table_name=financial_analysis';
+          url = 'http://140.131.114.169:8001/STOCK/data?table_name=financial_analysis';
           break;
         case 'trend-prediction':
-          // Set URL for trend prediction
-          url = 'http://172.16.66.118:8000/STOCK/data?table_name=trend_prediction';
+          url = 'http://140.131.114.169:8001/STOCK/data?table_name=trend_prediction';
           break;
         default:
           this.isLoading = false;
@@ -286,7 +280,28 @@ export default {
 
       axios.get(url)
         .then(response => {
-          this.company = response.data; // Assume the response data is in the required format
+          const data = response.data.content[0];
+          this.company = {
+            stockCode: data[0],
+            fullName: data[1],
+            shortName: data[2],
+            industry: data[3],
+            address: data[4],
+            chairman: data[5],
+            foundedDate: data[6],
+            listedDate: data[7],
+            capital: data[8],
+            marketValue: data[9],
+            sharesOutstanding: data[10],
+            accountingType: data[11],
+            reportingFrequency: data[12],
+            shareholdersMeeting: data[13],
+            transferAgent: data[14],
+            auditor: data[15],
+            ticker: data[16],
+            email: data[17],
+            website: data[18]
+          };
           this.isLoading = false;
         })
         .catch(error => {
@@ -294,13 +309,12 @@ export default {
           this.error = "Failed to load data";
           this.isLoading = false;
         });
-    },
-
+    
+  },
     showTSMInfo(routeName) {
       this.selectedNavItem = routeName;
-      this.fetchData(); // Reload data when navigation item changes
+      this.fetchData();
     },
-
     toggleContent(key) {
       this.showMA = false;
       this.showRSI = false;
@@ -316,12 +330,17 @@ export default {
     }
   },
   mounted() {
-    this.fetchData(); // Load data when the component mounts
+    this.fetchData();
+    this.$router.push({ path: '/company/basic-info', query: { stockCode: this.$route.params.stockCode || '1101' } });
   }
-}
-
-
+};
 </script>
+
+
+
+
+
+
 
 
 <style scoped>

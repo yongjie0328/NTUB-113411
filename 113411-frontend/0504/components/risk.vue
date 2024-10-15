@@ -2,13 +2,13 @@
   <div class="container">
     <h1 class="title">股票預測結果</h1>
     <div class="input-group">
-      <select v-model="selectedTicker" class="ticker-select" @change="clearPreviousData">
+      <select v-model="selectedTicker" class="ticker-select" @change="clearPreviousData('dropdown')">
         <option value="">選擇股票</option>
         <option v-for="(name, code) in stockList" :key="code" :value="code">
           {{ name }} ({{ code }})
         </option>
       </select>
-      <input v-model="customTicker" class="ticker-input" placeholder="或手動輸入股票代碼" @input="clearPreviousData">
+      <input v-model="customTicker" class="ticker-input" placeholder="或手動輸入股票代碼" @input="clearPreviousData('input')">
       <button @click="getPrediction" class="predict-button">獲取預測</button>
     </div>
     <div v-if="currentPrice" class="current-price">
@@ -50,7 +50,7 @@ export default {
       predictions: [],
       imageUrl: '',
       stockList: {
-         '2888.TW': '新光金控',
+       '2888.TW': '新光金控',
         '2891.TW': '中信金控',
         '2883.TW': '開發金控',
         '2882.TW': '國泰金控',
@@ -104,46 +104,55 @@ export default {
     };
   },
   methods: {
-    clearPreviousData() {
+    clearPreviousData(source) {
+      if (source === 'dropdown') {
+        this.customTicker = ''; // 清空输入框
+      } else if (source === 'input') {
+        this.selectedTicker = ''; // 清空下拉框
+      }
       this.currentPrice = null;
       this.predictions = [];
       this.imageUrl = '';
     },
     async getPrediction() {
-  const ticker = this.selectedTicker || this.customTicker;
-  if (!ticker) {
-    alert('請選擇股票或輸入股票代碼');
-    return;
-  }
+      let ticker = this.selectedTicker || this.customTicker;
 
-  try {
-    const responses = await Promise.all([
-      fetch(`http://127.0.0.1:5000/current-price?ticker=${ticker}`),
-      fetch(`http://127.0.0.1:5000/predict?ticker=${ticker}&days=90`),
-      fetch(`http://127.0.0.1:5000/predict-image?ticker=${ticker}&days=90`)
-    ]);
+      // 如果用户没有输入后缀，自动添加 .TW
+      if (ticker && !ticker.endsWith('.TW')) {
+        ticker += '.TW';
+      }
 
-    // 使用 JSON 方法處理前兩個響應，使用 blob 方法處理圖片響應
-    const [priceResponse, predictionResponse, imageResponse] = responses;
+      if (!ticker) {
+        alert('請選擇股票或輸入股票代碼');
+        return;
+      }
 
-    if (!priceResponse.ok || !predictionResponse.ok || !imageResponse.ok) {
-      throw new Error('Network response was not ok.');
-    }
+      try {
+        const responses = await Promise.all([
+          fetch(`http:///140.131.114.169:5000/current-price?ticker=${ticker}`),
+          fetch(`http:///140.131.114.169:5000/predict?ticker=${ticker}&days=90`),
+          fetch(`http:///140.131.114.169:5000/predict-image?ticker=${ticker}&days=90`)
+        ]);
 
-    const priceData = await priceResponse.json();
-    const predictions = await predictionResponse.json();
-    const imageBlob = await imageResponse.blob();
+        const [priceResponse, predictionResponse, imageResponse] = responses;
 
-    this.currentPrice = priceData.currentPrice;
-    this.predictions = predictions;
-    this.imageUrl = URL.createObjectURL(imageBlob);
+        if (!priceResponse.ok || !predictionResponse.ok || !imageResponse.ok) {
+          throw new Error('Network response was not ok.');
+        }
 
-  } catch (error) {
-    console.error('Error fetching prediction or image:', error);
-    alert(`錯誤: ${error.message}`);
-  }
-},
+        const priceData = await priceResponse.json();
+        const predictions = await predictionResponse.json();
+        const imageBlob = await imageResponse.blob();
 
+        this.currentPrice = priceData.currentPrice;
+        this.predictions = predictions;
+        this.imageUrl = URL.createObjectURL(imageBlob);
+
+      } catch (error) {
+        console.error('Error fetching prediction or image:', error);
+        alert(`錯誤: ${error.message}`);
+      }
+    },
     formatDate(dateStr) {
       const date = new Date(dateStr);
       return `${date.getFullYear() - 1911}/${date.getMonth() + 1}/${date.getDate()}`;
@@ -174,7 +183,6 @@ export default {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
-
 }
 
 .ticker-select, .ticker-input {

@@ -38,7 +38,7 @@
 
         <!-- Risk Preference -->
         <div class="form-group">
-          <label>風險偏好：</label>
+          <label>您能承受的最大損失是多少？</label>
           <div class="radio-group">
             <label><input type="radio" v-model="riskPreference" value="1" required /> 5% 以下</label>
             <label><input type="radio" v-model="riskPreference" value="2" required /> 5% - 15%</label>
@@ -72,8 +72,10 @@
           <!-- 股票選擇 -->
           <div v-for="(ticker, index) in selectedTickers" :key="index" class="form-group ticker-row">
             <label>{{ availableTickers[ticker] }} ({{ ticker }}) 投資比例 (0-1)：</label>
-            <input type="number" v-model="proportions[ticker]" min="0" max="1" step="0.01" required class="input" />
-            <button type="button" @click="removeTicker(ticker)" class="delete-button">×</button>
+            <div class="ticker-input-group">
+              <input type="number" v-model="proportions[ticker]" min="0" max="1" step="0.01" required class="input" />
+              <button type="button" @click="removeTicker(ticker)" class="delete-button">×</button>
+            </div>
           </div>
 
           <div class="form-group">
@@ -93,74 +95,107 @@
       <!-- Investment Calculation Result and Stock Details (Right Side) -->
       <div class="result-container">
         <div v-if="investmentResult && Object.keys(investmentResult).length > 0" class="result-box">
-  <h2>投資計算結果</h2>
-  <p><strong>投資組合的風險 (波動性):</strong> {{ formatNumber(investmentResult.portfolio_volatility_percentage) }}%</p>
-  <p><strong>預期年回報率:</strong> {{ formatNumber(investmentResult.portfolio_return_percentage) }}%</p>
-  <p><strong>可能的最大損失:</strong> {{ formatNumber(investmentResult.potential_loss) }} 元</p>
-  <p><strong>預期年收益:</strong> {{ formatNumber(investmentResult.expected_gain) }} 元</p>
-  <p><strong>VaR (風險價值) 百分比:</strong> {{ formatNumber(investmentResult.var_percentage) }}%</p>
-  <p><strong>VaR (風險價值) 金額:</strong> {{ formatNumber(investmentResult.var_amount) }} 元</p>
-</div>
+          <h2>投資計算結果</h2>
+          <p><strong>投資組合的風險 (波動性):</strong> {{ formatNumber(investmentResult.portfolio_volatility_percentage) }}%</p>
+          <p><strong>預期年回報率:</strong> {{ formatNumber(investmentResult.portfolio_return_percentage) }}%</p>
+          <p><strong>可能的最大損失:</strong> {{ formatNumber(investmentResult.potential_loss) }} 元</p>
+          <p><strong>預期年收益:</strong> {{ formatNumber(investmentResult.expected_gain) }} 元</p>
+          <p><strong>VaR (風險價值) 百分比:</strong> {{ formatNumber(investmentResult.var_percentage) }}%</p>
+          <p><strong>VaR (風險價值) 金額:</strong> {{ formatNumber(investmentResult.var_amount) }} 元</p>
+        </div>
 
+        <!-- Stock Details -->
+        <div v-if="investmentResult.detailed_analysis && Object.keys(investmentResult.detailed_analysis).length > 0">
+          <div v-for="(analysis, ticker) in investmentResult.detailed_analysis" :key="ticker" class="stock-details">
+            <h3>{{ analysis.company_name }} ({{ ticker }})</h3>
+            <p><strong>即時股價:</strong> {{ formatNumber(analysis.current_price) }}</p>
+            <h4>技術分析</h4>
+            <table>
+              <tr>
+                <td><strong>RSI</strong></td>
+                <td>{{ formatNumber(analysis.technical_analysis.RSI) }}</td>
+              </tr>
+              <tr>
+                <td><strong>MA 50</strong></td>
+                <td>{{ formatNumber(analysis.technical_analysis.MA_50) }}</td>
+              </tr>
+              <tr>
+                <td><strong>MA 200</strong></td>
+                <td>{{ formatNumber(analysis.technical_analysis.MA_200) }}</td>
+              </tr>
+              <tr>
+                <td><strong>MACD</strong></td>
+                <td>{{ formatNumber(analysis.technical_analysis.MACD) }}</td>
+              </tr>
+              <tr>
+                <td><strong>MACD Signal</strong></td>
+                <td>{{ formatNumber(analysis.technical_analysis.MACD_signal) }}</td>
+              </tr>
+              <tr>
+                <td><strong>Stochastic K</strong></td>
+                <td>{{ formatNumber(analysis.technical_analysis.Stochastic_K) }}</td>
+              </tr>
+              <tr>
+                <td><strong>Stochastic D</strong></td>
+                <td>{{ formatNumber(analysis.technical_analysis.Stochastic_D) }}</td>
+              </tr>
+            </table>
 
+            <h4>財務數據</h4>
+            <table>
+              <tr>
+                <td><strong>市值</strong></td>
+                <td>{{ formatNumber(analysis.financials.market_cap) }}</td>
+              </tr>
+              <tr>
+                <td><strong>本益比</strong></td>
+                <td>{{ formatNumber(analysis.financials.price_to_earnings) }}</td>
+              </tr>
+              <tr>
+                <td><strong>營收</strong></td>
+                <td>{{ formatNumber(analysis.financials.revenue) }}</td>
+              </tr>
+              <tr>
+                <td><strong>毛利</strong></td>
+                <td>{{ formatNumber(analysis.financials.gross_profit) }}</td>
+              </tr>
+              <tr>
+                <td><strong>負債比</strong></td>
+                <td>{{ formatNumber(analysis.financials.debt_to_equity) }}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
 
-  <!-- Stock Details -->
-  <div v-if="investmentResult.detailed_analysis && Object.keys(investmentResult.detailed_analysis).length > 0">
-    <div v-for="(analysis, ticker) in investmentResult.detailed_analysis" :key="ticker" class="stock-details">
-      <h3>{{ analysis.company_name }} ({{ ticker }})</h3>
-      <p><strong>即時股價:</strong> {{ analysis.current_price }}</p>
-      <h4>技術分析</h4>
-      <ul>
-        <li><strong>RSI:</strong> {{ analysis.technical_analysis.RSI }}</li>
-        <li><strong>MA 50:</strong> {{ analysis.technical_analysis.MA_50 }}</li>
-        <li><strong>MA 200:</strong> {{ analysis.technical_analysis.MA_200 }}</li>
-        <li><strong>MACD:</strong> {{ analysis.technical_analysis.MACD }}</li>
-        <li><strong>MACD Signal:</strong> {{ analysis.technical_analysis.MACD_signal }}</li>
-        <li><strong>Stochastic K:</strong> {{ analysis.technical_analysis.Stochastic_K }}</li>
-        <li><strong>Stochastic D:</strong> {{ analysis.technical_analysis.Stochastic_D }}</li>
-      </ul>
-      <h4>財務數據</h4>
-      <ul>
-        <li><strong>市值:</strong> {{ analysis.financials.market_cap }}</li>
-        <li><strong>本益比:</strong> {{ analysis.financials.price_to_earnings }}</li>
-        <li><strong>營收:</strong> {{ analysis.financials.revenue }}</li>
-        <li><strong>毛利:</strong> {{ analysis.financials.gross_profit }}</li>
-        <li><strong>負債比:</strong> {{ analysis.financials.debt_to_equity }}</li>
-      </ul>
-    </div>
-  </div>
-</div>
+      </div>
     </div>
   </div>
 </template>
 
-
 <script>
-import axios from 'axios';
-
 export default {
   name: 'PortfolioCalculatorForm',
   data() {
     return {
       investmentResult: {
-      portfolio_volatility_percentage: 0,
-      portfolio_return_percentage: 0,
-      potential_loss: 0,
-      expected_gain: 0,
-      var_percentage: 0,
-      var_amount: 0,
-      detailed_analysis: {}
-    },
-    investmentAmount: '',
-    selectedTicker: '',
-    selectedTickers: [],
-    proportions: {},
-    riskAssessmentResult: null,
-    financialStatus: '',
-    experience: '',
-    investmentGoal: '',
-    riskPreference: '',
-    availableTickers: {
+        portfolio_volatility_percentage: 0,
+        portfolio_return_percentage: 0,
+        potential_loss: 0,
+        expected_gain: 0,
+        var_percentage: 0,
+        var_amount: 0,
+        detailed_analysis: {}
+      },
+      investmentAmount: '',
+      selectedTicker: '',
+      selectedTickers: [],
+      proportions: {},
+      riskAssessmentResult: null,
+      financialStatus: '',
+      experience: '',
+      investmentGoal: '',
+      riskPreference: '',
+      availableTickers: {
         '2888.TW': '新光金控',
         '2891.TW': '中信金控',
         '2883.TW': '開發金控',
@@ -215,142 +250,219 @@ export default {
     };
   },
   methods: {
-  addTicker() {
-    if (this.selectedTicker && !this.selectedTickers.includes(this.selectedTicker)) {
-      this.selectedTickers.push(this.selectedTicker);
-      this.proportions[this.selectedTicker] = 0;
-    }
-  },
-  formatNumber(value) {
-    return (value !== undefined && value !== null) ? value.toFixed(2) : 'N/A';
-  },
-  removeTicker(ticker) {
-    this.selectedTickers = this.selectedTickers.filter(t => t !== ticker);
-    delete this.proportions[ticker];
-  },
-  async submitRiskAssessment() {
-    if (!this.financialStatus || !this.experience || !this.investmentGoal || !this.riskPreference) {
-      alert('請完成所有風險評估問題');
-      return;
-    }
-    const totalScore = parseInt(this.financialStatus) + parseInt(this.experience) + parseInt(this.investmentGoal) + parseInt(this.riskPreference);
-    let allocation = '';
-    if (totalScore >= 16) {
-      allocation = '建議高風險投資，股票佔比 80%，儲蓄佔比 20%。';
-    } else if (totalScore >= 8 && totalScore < 16) {
-      allocation = '建議中等風險投資，股票佔比 60%，儲蓄佔比 40%。';
-    } else {
-      allocation = '建議低風險投資，股票佔比 40%，儲蓄佔比 60%。';
-    }
-    this.riskAssessmentResult = { totalScore, allocation };
-  },
-  async submitInvestmentDetails() {
-    console.log('submitInvestmentDetails method called');
-    const totalProportion = Object.values(this.proportions).reduce((acc, val) => acc + parseFloat(val), 0);
-    if (totalProportion !== 1) {
-      alert('投資比例總和必須等於 1');
-      return;
-    }
-    try {
-      const response = await axios.post('http://192.168.50.19:5000/calculate_portfolio', {
+    addTicker() {
+      if (this.selectedTicker && !this.selectedTickers.includes(this.selectedTicker)) {
+        this.selectedTickers.push(this.selectedTicker);
+        this.proportions[this.selectedTicker] = 0;
+      }
+    },
+    formatNumber(value) {
+      return (value !== undefined && value !== null) ? Number(value).toFixed(2) : 'N/A';
+    },
+    removeTicker(ticker) {
+      this.selectedTickers = this.selectedTickers.filter(t => t !== ticker);
+      delete this.proportions[ticker];
+    },
+    async submitRiskAssessment() {
+      if (!this.financialStatus || !this.experience || !this.investmentGoal || !this.riskPreference) {
+        alert('請完成所有風險評估問題');
+        return;
+      }
+      const totalScore = parseInt(this.financialStatus) + parseInt(this.experience) + parseInt(this.investmentGoal) + parseInt(this.riskPreference);
+      let allocation = '';
+      if (totalScore >= 16) {
+        allocation = '建議高風險投資，股票佔比 80%，儲蓄佔比 20%。';
+      } else if (totalScore >= 8 && totalScore < 16) {
+        allocation = '建議中等風險投資，股票佔比 60%，儲蓄佔比 40%。';
+      } else {
+        allocation = '建議低風險投資，股票佔比 40%，儲蓄佔比 60%。';
+      }
+      this.riskAssessmentResult = { totalScore, allocation };
+    },
+    async submitInvestmentDetails() {
+      console.log('submitInvestmentDetails method called');
+      console.log('Selected Tickers:', this.selectedTickers);
+      console.log('Proportions:', this.proportions);
+      console.log('Investment Amount:', this.investmentAmount);
+
+      const totalProportion = Object.values(this.proportions).reduce((acc, val) => acc + parseFloat(val), 0);
+      if (totalProportion !== 1) {
+        alert('投資比例總和必須等於 1');
+        return;
+      }
+
+      // Construct the investmentDetails object for submission
+      const investmentDetails = {
+        investment_amount: this.investmentAmount,  // Correct field name
         tickers: this.selectedTickers,
         proportions: this.proportions,
-        investment_amount: parseFloat(this.investmentAmount),
-      });
-      this.investmentResult = response.data;
-    } catch (error) {
-      if (error.response) {
-        alert(`投资计算失败: ${error.response.data.error || '请检查您输入的资料是否正确，或稍后重试。'}`);
-      } else {
-        alert('投资计算失败，请检查您输入的资料是否正确，或稍后重试。');
-      }
-    }
-  },
-},
+      };
 
+      try {
+        const response = await fetch('http://140.131.114.169:5000/calculate_portfolio', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(investmentDetails)
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok.');
+        }
+
+        const data = await response.json();
+        console.log('API response:', data);
+        this.investmentResult = data; // Update the result data
+      } catch (error) {
+        console.error('Error:', error);
+        alert(`Error: ${error.message}`);
+      }
+    },
+  },
 };
 </script>
 
 <style>
-.container {
-  max-width: 1500px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  font-size: 24px;
-}
+  .form-group label {
+    font-size: 22px; /* 放大字體 */
+    font-weight: bold; /* 設置為粗體 */
+    color: #333; /* 文字顏色 */
+  }
 
-/* Risk Assessment Section */
-.risk-assessment-container {
-  display: flex;
-  justify-content: space-between;
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f0f0; /* 淺灰色背景 */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    font-size: 18px; /* 整體字體大小 */
+    margin-top: 40px; /* 與頁面上方的距離 */
+  }
+
+  .title {
+    text-align: center;
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 30px;
+    margin-top: 50px;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* 更大的間距以增加閱讀性 */
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .input {
+    font-weight: 100;
+    padding: 12px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff; /* 白色輸入框，與背景形成對比 */
+    width: 100%; /* 設置寬度為 100%，讓輸入框自適應父容器 */
+    max-width: 600px; /* 設置最大寬度，避免過大 */
+    transition: border-color 0.3s ease;
+  }
+
+  .button {
+    background-color: #505152; /* 中性色調的按鈕 */
+    color: white;
+    padding: 15px 20px;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%; /* 設定按鈕寬度為100%，自適應父容器 */
+    max-width: 300px; /* 設置最大寬度，避免按鈕過大 */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin: 0 auto; /* 使用 margin 置中 */
+  }
+
+  /* 按鈕的滑過效果 */
+  .button:hover {
+    background-color: #707172;
+    transform: scale(1.05);
+  }
+
+  /* 刪除按鈕樣式 */
+  .delete-button {
+    margin-left: 10px;
+    background-color: #d9534f;
+    padding: 10px 20px; /* 長方形的大小 */
+    font-size: 18px; /* 字體增大 */
+    color: white;
+    border-radius: 4px; /* 長方形，圓角略微調整 */
+    cursor: pointer;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s;
+  }
+
+  .delete-button:hover {
+    background-color: #c9302c;
+  }
+
+  /* 結果區域 */
+  .result-container {
+    margin-top: 30px;
+    background-color: #e9ecef;
+    padding: 20px;
+    border-radius: 8px;
+    font-size: 20px;
+  }
+
+  .result-box {
+    margin-bottom: 20px;
+  }
+
+  .analysis-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+  }
+
+  .analysis-box {
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .no-bullets {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .ticker-input-group {
+    display: flex;
+    align-items: center;
+  }
+
+  table {
+  width: 100%;
+  border-collapse: collapse;
   margin-bottom: 20px;
-}
+  }
 
-.risk-assessment-form,
-.investment-details-form {
-  width: 45%;
+  table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    width: 300px;
+  }
 
-}
-
-.investment-container {
-  display: flex;
-  justify-content: space-between; 
-  
-}
-
-.investment-form {
-  width: 45%;
-}
-
-.result-container {
-  width: 45%;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.radio-group {
-  display: flex;
-  gap: 15px;
-}
-
-.button {
-  padding: 10px 20px;
-  margin-top: 20px;
-}
-
-.stock-details {
-  margin-top: 20px;
-  background-color: rgb(233, 222, 209);
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-li {
-  list-style-type: none;
-}
-
-.result-box {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.input {
-  width: 100%; /* 让输入框和下拉框使用父容器的全部宽度 */
-  padding: 10px;
-  font-size: 20px; /* 增大字体大小 */
-}
-
-
+  td:first-child {
+    font-weight: bold;
+    width: 150px;
+  }
 </style>

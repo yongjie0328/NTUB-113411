@@ -13,7 +13,7 @@
         </select><br>
       </div>
 
-      <!-- 原本的輸入框 -->
+      <!-- 自定義股票代碼輸入框 -->
       <div class="form-group">
         <label for="customTicker">自定義股票代碼</label><br>
         <input type="text" id="customTicker" v-model="customTicker" placeholder="輸入股票代碼"><br>
@@ -25,99 +25,142 @@
         <input type="number" id="targetPrice" v-model="targetPrice"><br>
       </div>
 
+      <!-- LINE Notify Token 輸入框 -->
+      <div class="form-group">
+        <label for="lineNotifyToken">LINE Notify Token</label><br>
+        <input type="text" id="lineNotifyToken" v-model="lineNotifyToken" placeholder="輸入您的 LINE Notify Token"><br>
+        <!-- 新增 LINE Notify 連結 -->
+        <a href="https://notify-bot.line.me/zh_TW/" target="_blank" class="line-notify-link">取得您的 LINE Notify Token</a>
+      </div>
+
       <button type="submit">追蹤股價</button>
     </form>
     <p>{{ responseMessage }}</p>
+
+    <!-- 排行選擇按鈕 -->
+    <div class="ranking-buttons">
+      <button
+        @click="setSortType('volume')"
+        :class="{ active: sortType === 'volume' }"
+      >交易量排行</button>
+      <button
+        @click="setSortType('eps')"
+        :class="{ active: sortType === 'eps' }"
+      >EPS 成長率排行</button>
+      <button
+        @click="setSortType('changePercentage')"
+        :class="{ active: sortType === 'changePercentage' }"
+      >漲跌幅排行</button>
+      <button
+        @click="setSortType('institutionalVolume')"
+        :class="{ active: sortType === 'institutionalVolume' }"
+      >三大法人交易量排行</button>
+    </div>
+
+    <!-- 股票列表 -->
+    <h2>推薦股票</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>股票代碼</th>
+          <th>公司名稱</th>
+          <th>交易量</th>
+          <th>股價</th>
+          <th>漲跌幅</th>
+          <th>EPS</th>
+          <th>三大法人交易量</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="stock in visibleStocks" :key="stock.symbol">
+          <td>{{ stock.symbol }}</td>
+          <td>{{ stock.name }}</td>
+          <td>{{ stock.tradingVolume }}</td>
+          <td>{{ stock.stockPrice.toFixed(2) }}</td>
+          <td>{{ stock.changePercentage.toFixed(2) }}%</td>
+          <td>{{ stock.eps }}</td>
+          <td>{{ stock.institutionalVolume }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 更多按鈕 -->
+    <button v-if="showMore" @click="showMoreStocks">更多</button>
   </div>
 </template>
+
 
 <script>
 export default {
   name: 'StockTracker',
   data() {
     return {
-      ticker: '', // 下拉選單的值
-      customTicker: '', // 自定義輸入框的值
+      ticker: '',
+      customTicker: '',
       targetPrice: '',
+      lineNotifyToken: '',
       responseMessage: '',
-      stocks: {
-        '2888.TW': '新光金控',
-        '2891.TW': '中信金控',
-        '2883.TW': '開發金控',
-        '2882.TW': '國泰金控',
-        '2867.TW': '三商壽',
-        '2884.TW': '玉山金控',
-        '2880.TW': '華南金控',
-        '2890.TW': '永豐金控',
-        '2834.TW': '臺企銀',
-        '2885.TW': '元大金控',
-        '2303.TW': '聯電',
-        '2363.TW': '矽統',
-        '2330.TW': '台積電',
-        '6770.TW': '力積電',
-        '2344.TW': '華邦電',
-        '2449.TW': '京元電子',
-        '4967.TW': '十銓科技',
-        '2408.TW': '南亞科',
-        '3450.TW': '聯鈞',
-        '3711.TW': '日月光投控',
-        '2618.TW': '長榮航',
-        '2609.TW': '陽明海運',
-        '2610.TW': '華航',
-        '2603.TW': '長榮海運',
-        '2615.TW': '萬海航運',
-        '2605.TW': '新興航運',
-        '2634.TW': '漢翔',
-        '2606.TW': '裕民航運',
-        '5608.TW': '四維航運',
-        '2637.TW': '慧洋海運',
-        '3231.TW': '緯創',
-        '2353.TW': '宏碁',
-        '2382.TW': '廣達電腦',
-        '2356.TW': '英業達',
-        '3013.TW': '晟銘電',
-        '2324.TW': '仁寶電腦',
-        '2301.TW': '光寶科技',
-        '2365.TW': '昆盈',
-        '3017.TW': '奇鋐',
-        '3706.TW': '神達',
-        '2323.TW': '中環',
-        '2349.TW': '錸德',
-        '2374.TW': '佳能',
-        '2393.TW': '億光',
-        '2406.TW': '國碩',
-        '2409.TW': '友達光電',
-        '2426.TW': '鼎元',
-        '2429.TW': '銘旺科',
-        '2438.TW': '翔耀',
-        '2466.TW': '冠西電',
-      },
+      stocks: {},
+      stockList: [],
+      sortType: 'volume',
+      visibleStocksCount: 10,
+      additionalStocksCount: { volume: 0, eps: 0, changePercentage: 0, institutionalVolume: 0 }, // 每個排序類型的額外股票數量
     };
   },
-  watch: {
-    // 監聽下拉選單的變化
-    ticker(newVal) {
-      if (newVal) {
-        this.customTicker = ''; // 清空自定義輸入框
+  computed: {
+    sortedStocks() {
+      let sortedList = this.stockList.slice(); // 創建 stockList 的副本
+
+      if (this.sortType === 'eps') {
+        return sortedList.sort((a, b) => b.eps - a.eps);
+      } else if (this.sortType === 'changePercentage') {
+        return sortedList.sort((a, b) => b.changePercentage - a.changePercentage);
+      } else if (this.sortType === 'institutionalVolume') {
+        return sortedList.sort((a, b) => b.institutionalVolume - a.institutionalVolume);
+      } else {
+        return sortedList.sort((a, b) => b.tradingVolume - a.tradingVolume);
       }
     },
-    // 監聽自定義輸入框的變化
-    customTicker(newVal) {
-      if (newVal) {
-        this.ticker = ''; // 清空下拉選單
-      }
+    visibleStocks() {
+      const count = this.visibleStocksCount + this.additionalStocksCount[this.sortType]; // 考慮額外顯示的股票數量
+      return this.sortedStocks.slice(0, count); // 返回前 count 個股票
     },
+    showMore() {
+      return this.sortedStocks.length > this.visibleStocksCount + this.additionalStocksCount[this.sortType]; // 檢查是否有更多股票
+    },
+  },
+  mounted() {
+    fetch('http://140.131.114.169:8082/get_stocks')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        this.stockList = data;
+
+        // 將從後端獲取的股票資料轉換為下拉選單所需的格式
+        this.stocks = data.reduce((acc, stock) => {
+          acc[stock.symbol] = stock.name;
+          return acc;
+        }, {});
+      })
+      .catch(error => {
+        console.error('Error fetching stock data:', error);
+        this.responseMessage = '無法獲取推薦股票數據';
+      });
   },
   methods: {
     trackStock() {
-      const selectedTicker = this.ticker || this.customTicker; // 使用下拉選單或自定義輸入框的值
-      if (!selectedTicker) {
-        this.responseMessage = '請選擇或輸入股票代碼';
+      const selectedTicker = this.ticker || this.customTicker;
+      if (!selectedTicker || !this.targetPrice || !this.lineNotifyToken) {
+        this.responseMessage = '請填寫所有必填項目';
         return;
       }
-      
+
       this.responseMessage = '正在追蹤股價...';
-      fetch(`http://192.168.50.15:8081/track?ticker=${selectedTicker}&target_price=${this.targetPrice}`)
+      fetch(`http://140.131.114.169:8001/INFO/track?ticker=${selectedTicker}&target_price=${this.targetPrice}&notify_method=line&line_notify_token=${this.lineNotifyToken}`)
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok ' + response.statusText);
@@ -131,6 +174,14 @@ export default {
           console.error('錯誤:', error);
           this.responseMessage = '錯誤：' + error.message;
         });
+    },
+    setSortType(type) {
+      this.sortType = type;
+      this.visibleStocksCount = 10; // 重置可見股票數量
+      this.additionalStocksCount = { volume: 0, eps: 0, changePercentage: 0, institutionalVolume: 0 }; // 重置額外股票數量
+    },
+    showMoreStocks() {
+      this.additionalStocksCount[this.sortType] += 10; // 增加顯示的額外股票數量
     },
   },
 };
@@ -170,9 +221,43 @@ button {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-left: 10px;
 }
 
 button:hover {
   background-color: #0056b3;
+}
+
+button.active {
+  background-color: #0056b3; /* 按下後的暗色背景 */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+th {
+  background-color: #f2f2f2;
+  text-align: left;
+}
+
+.ranking-buttons {
+  margin: 20px;
+}
+
+.line-notify-link {
+  color: #007bff;
+  text-decoration: underline;
+  margin-top: 5px;
+}
+
+.line-notify-link:hover {
+  color: #0056b3;
 }
 </style>
