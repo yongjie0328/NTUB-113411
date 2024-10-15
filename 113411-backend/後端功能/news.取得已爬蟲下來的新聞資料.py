@@ -1,10 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
-from datetime import datetime
-from typing import Optional
 from service import news
 import mysql.connector
-import pytz
 
 # 資料庫連接配置
 def create_connection():
